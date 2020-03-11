@@ -241,7 +241,7 @@ ul.nav a:hover{
     /*圆角*/
     border-radius: 3px;
     margin-left: 40px;
-    margin-top: -2px;
+    margin-top: 5px;
 }
 
 .changeTendency li{
@@ -271,8 +271,7 @@ ul.nav a:hover{
 #lineChart{
     width: 75%;
     height: 400px;
-    background: green;
-    margin: 0px auto; /*居中*/
+    margin: 40px auto; /*居中*/
 }
 
 

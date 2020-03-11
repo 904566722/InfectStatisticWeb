@@ -10,11 +10,68 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <script type="text/javascript" src="js/raphael.js"></script>
+    <script type="text/javascript" src="./js/raphael.js"></script>
     <script type="text/javascript" src="./js/chinamapPath.js"></script>
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/test.js"></script>
     <title>index</title>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // step2. 基于准备好的dom，初始化echarts实例
+            var lineChart = echarts.init(document.getElementById('lineChart'));
+
+            // step3. 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '人数'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['新增确诊', '新增疑似']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '新增确诊',
+                        type: 'line',
+                        stack: '总量',
+                        data: [120, 132, 101, 134, 90, 230, 210]
+                    },
+                    {
+                        name: '新增疑似',
+                        type: 'line',
+                        stack: '总量',
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+                ]
+            };
+
+            // step4. 使用刚指定的配置项和数据显示图表。
+            lineChart.setOption(option);
+        });
+
+    </script>
 </head>
 <body>
     <!-- <div id="map"></div> -->
@@ -86,7 +143,7 @@
 
             <div id="chinaMap">
 
-                <!-- 疫情趋势标题 -->
+                <!-- 疫情地图标题 -->
                 <div class="midPartTitle">
                     <div class="titleIcon"></div>
                     <strong>疫情地图</strong>
@@ -105,7 +162,7 @@
 
 
             <div id="tendencyChart">
-                <!-- 地图标题 -->
+                <!-- 趋势标题 -->
                 <div class="midPartTitle">
                     <div class="titleIcon"></div>
                     <strong>趋势图</strong>
@@ -120,6 +177,11 @@
 
                 <!-- 趋势图图表 -->
                 <div id="lineChart"></div>
+                <script type="text/javascript">
+
+
+
+                </script>
 
             </div>
 

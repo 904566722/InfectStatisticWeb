@@ -175,6 +175,17 @@ window.onload = function () {
             var xx = st.getBBox().x + (st.getBBox().width / 2);
             var yy = st.getBBox().y + (st.getBBox().height / 2);
 
+            if (china[state]['name'] == '澳门') {
+                yy += 10;
+            }else if (china[state]['name'] == '香港') {
+                xx += 20;
+            }else if (china[state]['name'] == '广东') {
+                xx -= 10;
+            }else if (china[state]['name'] == '内蒙古') {
+                yy += 50;
+            }
+
+
             //写入文字 
             china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
 
@@ -183,11 +194,17 @@ window.onload = function () {
                 china[state]['text'].toFront();
                 R.safari();
             };
+
             st[0].onmouseout = function () {//鼠标离开 
                 st.animate({fill: "#97d6f5", stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
             };
+
+            // //点击事件
+            // st[0].onclick = function(){
+            //     alert("hello,你点击了我");
+            // }
 
         })(china[state]['path'], state);
 
@@ -216,7 +233,7 @@ window.onload = function () {
                     yy -= 10;
                     break;
                 case "澳门":
-                    yy += 10;
+                    yy += 30;
                     break;
                 case "香港":
                     xx += 20;
