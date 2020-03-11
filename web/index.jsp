@@ -6,11 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <title>	index</title>
+    <script type="text/javascript" src="js/raphael.js"></script>
+    <script type="text/javascript" src="./js/chinamapPath.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <title>index</title>
 
 </head>
 <body>
@@ -144,4 +147,5 @@
 
         </div>
     </div>
+</body>
 </html>
