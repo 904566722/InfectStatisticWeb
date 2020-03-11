@@ -201,6 +201,11 @@ window.onload = function () {
                 R.safari();
             };
 
+
+            st[0].onclick = function () {
+                window.location.href = "jsp/province.jsp"
+            }
+
             // //点击事件
             // st[0].onclick = function(){
             //     alert("hello,你点击了我");

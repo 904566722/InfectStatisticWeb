@@ -195,7 +195,22 @@
 
                 <!-- 表格数据 -->
                 <div id="tableChart">
-
+                    <table id="table">
+                        <tr>
+                            <th>地区</th>
+                            <th style="background-color: #F74C31">现存确诊</th>
+                            <th style="background-color: #F78207">累计确诊</th>
+                            <th style="background-color: #7F7F7F">累计死亡</th>
+                            <th style="background-color: #00BFBF">累计治愈</th>
+                        </tr>
+                        <tr>
+                            <th>福建</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                        </tr>
+                    </table>
                 </div>
 
             </div>

@@ -1,0 +1,45 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+
+#main{
+    margin: 0px;
+    padding: 0;
+    width: 100%;
+    height:3000px;
+    background: green;
+}
+
+#mid{
+    position: relative;
+    left: 25%;
+    width: 50%;
+    height: 2000px;
+    background: #0EA6D8;
+}
+
+#provinceName{
+    width: 100%;
+    height: 150px;
+    background: #AAAAAA;
+}
+
+#ps1{
+    width: 100%;
+    height: 40px;
+    background: #288ADE;
+}
+
+#fourData{
+    width: 100%;
+    height: 150px;
+    background: #F59A23;
+}
+
+.chart{
+    width: 75%;
+    height: 400px;
+    margin: 40px auto; /*居中*/
+    background: #F74C31;
+}
