@@ -1,0 +1,308 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+
+#main{
+    margin: 0px;
+    padding: 0;
+    height:3000px;
+}
+
+/**************  左部分 *********************/
+
+#leftPart{
+    width: 25%;
+    height: 1000px;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+#nav{
+    position: fixed;
+    left: 100px;
+    top: 100px;
+}
+
+ul.nav{
+    list-style: none;
+    padding:0;
+}
+
+ul.nav li{
+    width: auto;
+    margin:5px 0;
+}
+
+ul.nav a{
+    display: block;
+    width: auto;
+    padding: 2px 0;
+    text-decoration: none;
+    color:black;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+ul.nav a:hover{
+    background-color: #E8F5FE;
+}
+
+/*ul.nav a:focus{
+	color: #E8F5FE;
+}*/
+
+/**************  左部分- END *********************/
+
+/**************  中间部分  *********************/
+
+#midPart{
+    width: 50%;
+    height: 2000px;
+    position: relative;
+    left: 25%;
+    top: -1000px;
+    text-align: center;
+    padding-top: 15px;
+    border-left: 1px solid #E6ECF0;
+    border-right: 1px solid #E6ECF0;
+}
+
+.title{
+    margin-bottom: 15px;
+    border-bottom: 1px solid #E6ECF0;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+#wholeData{
+    width: 100%;
+}
+
+#wdPs{
+    width: 100%;
+}
+
+.ps1{
+    margin: 0;
+    text-align: left;
+    position: relative;
+    left: 5%;
+    width: 45%;
+    height: 20px;
+    font-size: 14px;
+}
+
+.ps2{
+    margin: 0;
+    text-align: right;
+    position: relative;
+    left: 50%;
+    top: -20px;
+    width: 50%;
+    height:20px;
+    font-size: 10px;
+}
+
+#wdData{
+    padding-top: 5px;
+    position: relative;
+    top: -20px;
+    margin: 0;
+    height: 100px;
+    width: 100%;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+
+}
+
+.ip{
+    position: relative;
+    left: 10%;
+    width: 20%;
+    height: 100px;
+    margin-top: 10px;
+}
+.sp{
+    position: relative;
+    left: 30%;
+    top: -100px;
+    width: 20%;
+    height: 100px;
+}
+.cure{
+    position: relative;
+    left: 50%;
+    top: -200px;
+    width: 20%;
+    height: 100px;
+}
+.dead{
+    position: relative;
+    top: -300px;
+    left: 70%;
+    width: 20%;
+    height: 100px;
+}
+
+
+#chinaMap{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.midPartTitle{
+    width: 100%;
+    height: 40px;
+    text-align: left;
+}
+
+.titleIcon{
+    position: relative;
+    top: 5px;
+    left: 20px;
+    background: #F78207;
+    width: 5px;
+    height: 25px;
+    margin-right: 10px;
+
+}
+
+.midPartTitle strong{
+    position: relative;
+    top: -18px;
+    left: 40px;
+}
+
+#map{
+    margin-top: 10px;
+    width:60%;
+    height: 500px;
+    margin: 20px auto;
+    background: #AAAAAA;
+    /*background: black;*/
+}
+
+.changeMap{
+    list-style: none;
+    margin: 0px auto;
+    padding: 0;
+    background: #0EA6D8;
+    width: 60%;
+    /*解决高度塌陷*/
+    overflow: hidden;
+    /*圆角*/
+    border-radius: 5px;
+}
+
+.changeMap li{
+    float: left;
+    text-align: left;
+    /*指定宽度 给a获取宽度用*/
+    width: 50%;
+}
+
+.changeMap a{
+    /*转为块元素*/
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 2px 0;
+    text-decoration: none;
+    color:white;
+    font-weight: bold;
+}
+
+/*鼠标移入效果*/
+.changeMap a:hover{
+    background-color: #288ADE;
+}
+
+/*趋势图部分*/
+#tendencyChart{
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+}
+
+/*趋势图切换按钮*/
+.changeTendency{
+    list-style: none;
+    padding: 0;
+    background: #F59A23;
+    width: 40%;
+    /*解决高度塌陷*/
+    overflow: hidden;
+    /*圆角*/
+    border-radius: 3px;
+    margin-left: 40px;
+    margin-top: -2px;
+}
+
+.changeTendency li{
+    float: left;
+    text-align: left;
+    /*指定宽度 给a获取宽度用*/
+    width: 33%;
+}
+
+.changeTendency a{
+    /*转为块元素*/
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 2px 0;
+    text-decoration: none;
+    color:white;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/*鼠标移入效果*/
+.changeTendency a:hover{
+    background-color: #288ADE;
+}
+
+#lineChart{
+    width: 75%;
+    height: 400px;
+    background: green;
+    margin: 0px auto; /*居中*/
+}
+
+
+/*表格数据部分*/
+#tableData{
+    width: 100%;
+    margin-top: 20px;
+}
+
+#tableChart{
+    width: 80%;
+    height: 400px;
+    background: yellow;
+    margin:10px auto;
+}
+
+/**************  中间部分 END*********************/
+
+/**************  右边部分 *********************/
+
+#rightPart{
+    width: 25%;
+    height: 1000px;
+    position: relative;
+    left: 75%;
+    top: -2040px;
+}
+
+/**************  右边部分 END *********************/
