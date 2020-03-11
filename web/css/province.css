@@ -7,8 +7,7 @@ body{
     margin: 0px;
     padding: 0;
     width: 100%;
-    height:3000px;
-    background: green;
+    height:2000px;
 }
 
 #mid{
@@ -16,30 +15,138 @@ body{
     left: 25%;
     width: 50%;
     height: 2000px;
-    background: #0EA6D8;
+}
+
+#provinceNameAndReturn{
+    width: 100%;
+    height: 121px;
 }
 
 #provinceName{
-    width: 100%;
-    height: 150px;
-    background: #AAAAAA;
+    position: relative;
+    top: 59px;
+    width: 90px;
+    height: 36px;
+    background: #F59A23;
+    border-radius: 8px;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 26px;
+}
+
+#returnButton{
+    position: relative;
+    left: 95px;
+    top: 14px;
+    width: 44px;
+    height: 44px;
+    background: #00BFBF;
+    border-radius: 50%;
+}
+
+#returnButton a{
+    text-decoration: none;
+    position: absolute;
+    top: 10px;
+    left: 7px;
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
 }
 
 #ps1{
     width: 100%;
     height: 40px;
-    background: #288ADE;
+}
+
+#ps1 span{
+    margin: 0;
+    text-align: left;
+    position: relative;
+    left: 5%;
+    width: 45%;
+    height: 20px;
+    font-size: 14px;
 }
 
 #fourData{
     width: 100%;
-    height: 150px;
-    background: #F59A23;
+    height: 136px;
+    background: #F2F2F2;
+    padding-top: 5px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
 }
 
-.chart{
+.ip{
+    position: relative;
+    left: 10%;
+    top: 15px;
+    width: 20%;
+    height: 100px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.ip>span{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.sp{
+    position: relative;
+    left: 30%;
+    top: -85px;
+    width: 20%;
+    height: 100px;
+    text-align: center;
+}
+
+.sp>span{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cure{
+    position: relative;
+    left: 50%;
+    top: -185px;
+    width: 20%;
+    height: 100px;
+    text-align: center;
+}
+
+.cure>span{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dead{
+    position: relative;
+    top: -285px;
+    left: 70%;
+    width: 20%;
+    height: 100px;
+    text-align: center;
+}
+
+
+.dead>span{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#chart1{
+
     width: 75%;
     height: 400px;
-    margin: 40px auto; /*居中*/
-    background: #F74C31;
+    margin: 62px auto;
+}
+
+#chart2{
+    width: 75%;
+    height: 400px;
+    margin: 100px auto;
 }
