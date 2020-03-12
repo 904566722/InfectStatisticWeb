@@ -17,7 +17,6 @@ public class DBConnect {
         return DriverManager.getConnection(url);
     }
 
-    /* 关闭连接的方法 */
     public static void close(ResultSet rs, Statement stmt, Connection conn) {
         try {
             if (rs != null)

@@ -59,6 +59,7 @@ public class DataDAO {
     }
 
     /*public static void main(String[] args) {
-        System.out.println(getTotalData("2020-02-01"));
+        DataDAO dataDAO = new DataDAO();
+        System.out.println(dataDAO.getTotalData("2020-02-01"));
     }*/
 }

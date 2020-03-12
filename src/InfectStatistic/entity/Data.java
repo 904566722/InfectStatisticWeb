@@ -4,8 +4,10 @@ public class Data {
     private int id;
     private String date;
     private String province;
-    private int ip;
-    private int sp;
+    private int eip;
+    private int esp;
+    private int tip;
+    private int tsp;
     private int cure;
     private int dead;
 
@@ -21,12 +23,20 @@ public class Data {
         return province;
     }
 
-    public int getIp() {
-        return ip;
+    public int getEip() {
+        return eip;
     }
 
-    public int getSp() {
-        return sp;
+    public int getEsp() {
+        return esp;
+    }
+
+    public int getTip() {
+        return tip;
+    }
+
+    public int getTsp() {
+        return tsp;
     }
 
     public int getCure() {
@@ -49,12 +59,20 @@ public class Data {
         this.province = province;
     }
 
-    public void setIp(int ip) {
-        this.ip = ip;
+    public void setEip(int eip) {
+        this.eip = eip;
     }
 
-    public void setSp(int sp) {
-        this.sp = sp;
+    public void setEsp(int esp) {
+        this.esp = esp;
+    }
+
+    public void setTip(int tip) {
+        this.tip = tip;
+    }
+
+    public void setTsp(int tsp) {
+        this.tsp = tsp;
     }
 
     public void setCure(int cure) {
