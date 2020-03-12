@@ -19,60 +19,20 @@
     <script type="text/javascript">
         $(document).ready(function(){
             //绘制地图
-            drawMap();
-            // step2. 基于准备好的dom，初始化echarts实例
-            var lineChart = echarts.init(document.getElementById('lineChart'));
-
-            // step3. 指定图表的配置项和数据
-            var option = {
-                title: {
-                    text: '人数'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['新增确诊', '新增疑似']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name: '新增确诊',
-                        type: 'line',
-                        stack: '总量',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: '新增疑似',
-                        type: 'line',
-                        stack: '总量',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                ]
-            };
-
-            // step4. 使用刚指定的配置项和数据显示图表。
-            lineChart.setOption(option);
+             drawMap();
+             //绘制趋势图1
+            drawLineChart1();
+            //隐藏图2和图3
+            $("#lineChart3").hide();
+            $("#lineChart2").hide();
         });
 
+        // $("#showLineChart2").click(function () {
+        //     alert("点击了2");
+        //     $("#lineChart1").hide();
+        //     $("#lineChart3").hide();
+        //     drawLineChart2();
+        // });
 
 
     </script>
@@ -84,9 +44,9 @@
             <!-- 导航栏 -->
             <div id="nav">
                 <ul class="nav">
-                    <li><a href="#chinaMap">疫情地图</a></li>
-                    <li><a href="#tendencyChart">趋势图</a></li>
-                    <li><a href="#tableData">表格数据</a></li>
+                    <li><a id="#scrollToMap" href="javascript:scrollToMap()">疫情地图</a></li>
+                    <li><a id="#scrollToTendency" href="javascript:scrollToTendency()">趋势图</a></li>
+                    <li><a id="#scrollToTable" href="javascript:scrollToTable()">表格数据</a></li>
                 </ul>
             </div>
 
@@ -158,8 +118,8 @@
 
                 <!-- 切换地图按钮 -->
                 <ul class="changeMap">
-                    <li><a href="#">现存确诊</a></li>
-                    <li><a href="#">累计确诊</a></li>
+                    <li><a id="drawMap1" href="javascript:drawMap1()">现存确诊</a></li>
+                    <li><a id="drawMap2" href="javascript:drawMap2()">累计确诊</a></li>
                 </ul>
 
             </div>
@@ -174,18 +134,15 @@
 
                 <!-- 切换趋势图按钮 -->
                 <ul class="changeTendency">
-                    <li><a href="#">新增确诊/疑似</a></li>
-                    <li><a href="#">累计治愈/死亡</a></li>
-                    <li><a href="#">治愈率/死亡率</a></li>
+                    <li><a id="showLineChart1" href="javascript:drawLineChart1()">新增确诊/疑似</a></li>
+                    <li><a id="showLineChart2" href="javascript:drawLineChart2()">累计治愈/死亡</a></li>
+                    <li><a id="showLineChart3" href="javascript:drawLineChart3()">治愈率/死亡率</a></li>
                 </ul>
 
                 <!-- 趋势图图表 -->
-                <div id="lineChart"></div>
-                <script type="text/javascript">
-
-
-
-                </script>
+                <div id="lineChart1"></div>
+                <div id="lineChart2"></div>
+                <div id="lineChart3"></div>
 
             </div>
 
