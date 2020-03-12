@@ -17,9 +17,9 @@ public class CountData {
 
     public static void main(String[] args) {
         CountData countData = new CountData();
-        String[] logDateString = {"2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24"
-                , "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31"
-                , "2020-02-01", "2020-02-02"};
+        String[] logDateString = {"2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24",
+                "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31",
+                "2020-02-01", "2020-02-02"};
         for (String s : logDateString) {
             DataHandle dataHandle = countData.new DataHandle();
             dataHandle.dataProcess(countData.readLog(s, "D:\\log\\"));
@@ -39,24 +39,21 @@ public class CountData {
                 fileName = value.getName();
                 fileNameWithout = fileName.substring(0, 10);
                 if (logDate.equals(fileNameWithout)) {
-                    //System.out.println("3");
                     BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(
                             new File(logPath + fileName)), "GBK"));
                     String str;
                     while ((str = bf.readLine()) != null) {
                         if (!str.startsWith("//")) {
                             stringList.add(str);
-                            //System.out.println(str);
                         }
                     }
                     bf.close();
                 }
             }
-            return stringList;
         } catch (IOException e) {
             e.printStackTrace();
-            return stringList;
         }
+        return stringList;
     }
 
     class DataHandle {
@@ -302,9 +299,7 @@ public class CountData {
                 connection.setAutoCommit(false);
                 Statement statement = connection.createStatement();
                 for (int i = 0; i < influencedProvince.length; i++) {
-                    //System.out.print("2");
                     //if (influencedProvince[i] != 0) {
-                        //System.out.println("1");
                         statement.executeUpdate("INSERT INTO data VALUES(null, '" + logDate + "', '" + provinceString[i]
                             + "', " + patient[i][0] + ", " + patient[i][1] + ", "+ patient[i][2] + ", "+ patient[i][3]
                             + ", "+ patient[i][4] + ", "+ patient[i][5] + ")");

@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class DataDAO {
 
     public JSONArray getTotalData(String endDate) {
-        String[] provinceString = {"全国", "安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南",
+        String[] provinceString = {"安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南",
                 "河北", "河南", "黑龙江", "湖北", "湖南", "吉林", "江苏", "江西", "辽宁", "内蒙古", "宁夏", "青海", "山东",
                 "山西", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南", "浙江", "台湾", "香港", "澳门"};
         String[] patientType = {"现存确诊", "现存疑似", "累计确诊", "累计疑似", "累计治愈", "累计死亡"};
@@ -59,6 +59,7 @@ public class DataDAO {
     }
 
     /*public static void main(String[] args) {
-        System.out.println(getTotalData("2020-02-01"));
+        DataDAO dataDAO = new DataDAO();
+        System.out.println(dataDAO.getTotalData("2020-02-01"));
     }*/
 }
