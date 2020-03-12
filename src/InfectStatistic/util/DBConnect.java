@@ -13,7 +13,7 @@ public class DBConnect {
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:sqlite:test.db";
+        String url = "jdbc:sqlite:infectStatistic.db";
         return DriverManager.getConnection(url);
     }
 

@@ -10,7 +10,7 @@ public class CreateTable {
             connection.setAutoCommit(false);
             Statement statement = connection.createStatement();
             statement.executeUpdate("create table data(id integer primary key autoincrement, date date, " +
-                    "province varchar(20), ip integer, sp integer, cure integer, dead integer);");
+                "province varchar(20), eip integer, esp integer, tip integer, tsp integer, cure integer, dead integer);");
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
