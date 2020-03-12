@@ -380,6 +380,7 @@ ul.nav a:hover{
     padding: 8px;
     border-style: solid;
     border-color: #999999;
+    text-align: center;
 }
 
 /**************  中间部分 END*********************/

@@ -129,7 +129,7 @@
                     <span style="color: white;font-weight:bold">省名</span>
                 </div>
                 <div id="returnButton">
-                    <a href="../index.jsp">首页</a>
+                    <a href="../DataServlet?action=getTotalData">首页</a>
                 </div>
             </div>
             <div id="ps1">

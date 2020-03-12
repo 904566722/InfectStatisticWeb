@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="net.sf.json.JSONArray" %>
+<%@ page import="net.sf.json.JSONObject" %>
+<%@ page import="net.sf.json.JSON" %>
+<%@ page import="java.util.Comparator" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -20,6 +23,7 @@
     <script type="text/javascript" src="./js/chinamapPath.js"></script>
     <script type="text/javascript" src="./js/jquery.js"></script>
     <script type="text/javascript" src="./js/test.js"></script>
+
     <title>index</title>
 
     <script type="text/javascript">
@@ -33,17 +37,7 @@
             //隐藏图2和图3
             $("#lineChart3").hide();
             $("#lineChart2").hide();
-
-
         });
-
-        // var arrayJson = eval(data);
-        // alert(arrayJson);
-
-        // for(var item in data){
-        //     // alert(data[item].name);
-        //     alert("hello");
-        // }
     </script>
 </head>
 <body>
@@ -165,6 +159,10 @@
 
                 <!-- 表格数据 -->
                 <div id="tableChart">
+                    <!-- 1.遍历数据
+                        2.标题顺序：地区 name 现存确诊eip 累计确诊tip 累计死亡dead 累计治愈cure
+                     -->
+
                     <table id="table">
                         <tr>
                             <th>地区</th>
@@ -173,13 +171,18 @@
                             <th style="background-color: #7F7F7F">累计死亡</th>
                             <th style="background-color: #00BFBF">累计治愈</th>
                         </tr>
-                        <tr>
-                            <th>福建</th>
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                        </tr>
+                        <%
+                            JSONArray jsonData = (JSONArray)data;
+                            for(int i=0; i< jsonData.size(); i++){
+                                JSONObject objData = jsonData.getJSONObject(i);%>
+                              <tr><td><%=objData.getString("name")%></td>
+                                    <td><%=objData.getInt("eip") %></td>
+                                  <td><%=objData.getInt("tip") %></td>
+                                  <td><%=objData.getInt("dead") %></td>
+                                  <td><%=objData.getInt("cure") %></td>
+                              </tr>
+                            <%}
+                          %>
                     </table>
                 </div>
 
@@ -191,8 +194,8 @@
 
         <div id="rightPart">
 
-            <p><%= data%></p>
         </div>
+
     </div>
 </body>
 </html>
