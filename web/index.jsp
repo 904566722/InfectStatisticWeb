@@ -5,7 +5,13 @@
   Time: 10:03
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="net.sf.json.JSONArray" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    Object data = request.getAttribute("totalData");
+
+%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -17,24 +23,27 @@
     <title>index</title>
 
     <script type="text/javascript">
+        console.log(<%=data%>);
         $(document).ready(function(){
             //绘制地图
-             drawMap();
+            //  drawMap();
+            distinguishColor(<%=data%>);
              //绘制趋势图1
             drawLineChart1();
             //隐藏图2和图3
             $("#lineChart3").hide();
             $("#lineChart2").hide();
+
+
         });
 
-        // $("#showLineChart2").click(function () {
-        //     alert("点击了2");
-        //     $("#lineChart1").hide();
-        //     $("#lineChart3").hide();
-        //     drawLineChart2();
-        // });
+        // var arrayJson = eval(data);
+        // alert(arrayJson);
 
-
+        // for(var item in data){
+        //     // alert(data[item].name);
+        //     alert("hello");
+        // }
     </script>
 </head>
 <body>
@@ -182,7 +191,7 @@
 
         <div id="rightPart">
 
-
+            <p><%= data%></p>
         </div>
     </div>
 </body>

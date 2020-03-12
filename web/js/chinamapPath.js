@@ -234,17 +234,11 @@ function drawMap(){
 function distinguishColor(json){
     //1. 获得数据--json格式
     //2. json转换为数组
-    var data = string2Array(json)
-
-    var rank;   //等级
+    var data = string2Array(JSON.stringify(json));
+    var flag;
     var arr = new Array();
-    //3. 遍历数组，做等级区分
-    for(var item in arr){
-        //arr[item].name
-        //arr[item].eip     esp     tip       tsp      cure     dead
-        //        现存确诊 现存疑似 累计确诊 累计疑似  累计治愈   累计死亡
-
-        var d = arr[item].eip;
+    for(var i=0; i<data.length; i++){
+        var d = data[i].eip;
         if(d == 0){
             rank = 0;
         }else if(0<d && d<10){
@@ -260,95 +254,95 @@ function distinguishColor(json){
         }else if(10000<=d){
             rank = 6;
         }
-        //等级颜色
-        var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
-
-        var R = Raphael("map", 600, 500);
-        paintMap();
-
-        var textArr = {
-            "fill" : "#000",
-            "font-size" : "12px",
-            "course" : "pointer"
-        };
-
-        var i=0;
-        for (var state in china) {
-            china[state]['path'].color = Raphael.getColor(0.9);
-            (function (st, state) {
-
-                //获取当前图形的中心坐标
-                var xx = st.getBBox().x + (st.getBBox().width / 2);
-                var yy = st.getBBox().y + (st.getBBox().height / 2);
-
-                //修改部分地图文字偏移坐标
-                switch (china[state]['name']) {
-                    case "江苏":
-                        xx += 5;
-                        yy -= 10;
-                        break;
-                    case "河北":
-                        xx -= 10;
-                        yy += 20;
-                        break;
-                    case "天津":
-                        xx += 10;
-                        yy += 10;
-                        break;
-                    case "上海":
-                        xx += 10;
-                        break;
-                    case "广东":
-                        yy -= 10;
-                        break;
-                    case "澳门":
-                        yy += 10;
-                        break;
-                    case "香港":
-                        xx += 20;
-                        yy += 5;
-                        break;
-                    case "甘肃":
-                        xx -= 40;
-                        yy -= 30;
-                        break;
-                    case "陕西":
-                        xx += 5;
-                        yy += 10;
-                        break;
-                    case "内蒙古":
-                        xx -= 15;
-                        yy += 65;
-                        break;
-                    default:
-                }
-                //写入文字
-                china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
-
-                var fillcolor = colors[arr[i]];//获取对应的颜色
-
-                st.attr({fill:fillcolor});//填充背景色
-
-                st[0].onmouseover = function () {
-                    st.animate({fill: "#fdd", stroke: "#eee"}, 500);
-                    china[state]['text'].toFront();
-                    R.safari();
-                };
-                st[0].onmouseout = function () {
-                    st.animate({fill: fillcolor, stroke: "#eee"}, 500);
-                    china[state]['text'].toFront();
-                    R.safari();
-                };
-
-            })(china[state]['path'], state);
-            i++;
-        }
-
+        arr.push(rank);
     }
+    //定义颜色
+    var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
 
+    //地图绘制
+    var R = Raphael("map", 600, 500);
+    paintMap(R);
+    var textAttr = {
+        "fill" : "#000",
+        "font-size" : "12px",
+        "course" : "pointer"
+    };
+
+    var i = 0;
+    for(var state in china){
+        china[state]['path'].color = Raphael.getColor(0.9);
+        (function (st, state) {
+
+            //获取当前图形的中心坐标
+            var xx = st.getBBox().x + (st.getBBox().width / 2);
+            var yy = st.getBBox().y + (st.getBBox().height / 2);
+
+            //修改部分地图文字偏移坐标
+            switch (china[state]['name']) {
+                case "江苏":
+                    xx += 5;
+                    yy -= 10;
+                    break;
+                case "河北":
+                    xx -= 10;
+                    yy += 20;
+                    break;
+                case "天津":
+                    xx += 10;
+                    yy += 10;
+                    break;
+                case "上海":
+                    xx += 10;
+                    break;
+                case "广东":
+                    yy -= 10;
+                    break;
+                case "澳门":
+                    yy += 10;
+                    break;
+                case "香港":
+                    xx += 20;
+                    yy += 5;
+                    break;
+                case "甘肃":
+                    xx -= 40;
+                    yy -= 30;
+                    break;
+                case "陕西":
+                    xx += 5;
+                    yy += 10;
+                    break;
+                case "内蒙古":
+                    xx -= 15;
+                    yy += 65;
+                    break;
+                default:
+            }
+            //写入文字
+            china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
+
+            var fillcolor = colors[arr[i]];//获取对应的颜色
+
+            st.attr({fill:fillcolor});//填充背景色
+
+            st[0].onmouseover = function () {
+                st.animate({fill: "#fdd", stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+            st[0].onmouseout = function () {
+                st.animate({fill: fillcolor, stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+
+        })(china[state]['path'], state);
+        i++;
+    }
 
 }
 
+//json格式的字符串转化为数组
 function string2Array(string) {
     eval("var result = " + decodeURI(string));
     return result;
