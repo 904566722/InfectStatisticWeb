@@ -18,6 +18,8 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            //绘制地图
+            drawMap();
             // step2. 基于准备好的dom，初始化echarts实例
             var lineChart = echarts.init(document.getElementById('lineChart'));
 
@@ -71,6 +73,8 @@
             lineChart.setOption(option);
         });
 
+
+
     </script>
 </head>
 <body>
@@ -105,32 +109,32 @@
                 </div>
                 <div id="wdData">
                     <div class="ip">
-                        <strong style="color: #F74C31">49666</strong><br>
-                        <span style="font-size: 12px;font-weight: bold;">现存确诊</span>
+                        <strong>49666</strong><br>
+                        <span>现存确诊</span>
                         <div class="compareToday">
                             <span style="font-size: 8px">较昨日：</span>
                             <span style="font-size: 8px;color: #F74C31">-1335</span>
                         </div>
                     </div>
                     <div class="sp">
-                        <strong style="color: #F78207">3434</strong><br>
-                        <span style="font-size: 12px;font-weight: bold;">现存疑似</span>
+                        <strong>3434</strong><br>
+                        <span>现存疑似</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
                             <span style="font-size: 6px;color: #F78207">-1335</span>
                         </div>
                     </div>
                     <div class="cure">
-                        <strong style="color: #28B7A3">49666</strong><br>
-                        <span style="font-size: 12px;font-weight: bold;">累计治愈</span>
+                        <strong>25007</strong><br>
+                        <span>累计治愈</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
                             <span style="font-size: 6px;color: #28B7A3">-1335</span>
                         </div>
                     </div>
                     <div class="dead">
-                        <strong style="color: #5D7092">49666</strong><br>
-                        <span style="font-size: 12px;font-weight: bold;">累计死亡</span>
+                        <strong>2596</strong><br>
+                        <span>累计死亡</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
                             <span style="font-size: 6px;color: #5D7092">-1335</span>
