@@ -12,8 +12,52 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    Object data = request.getAttribute("totalData");
+    Object totalData = request.getAttribute("totalData");
+    JSONArray lineChartData = (JSONArray) request.getAttribute("dailyData");
+    JSONArray dateArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        dateArray.add(jsonObject.get("date"));
+    }
 
+    //折线图1用：ip 新增感染， sp 新增疑似
+    JSONArray ipArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        ipArray.add(jsonObject.get("ip"));
+    }
+
+    JSONArray spArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        spArray.add(jsonObject.get("sp"));
+    }
+
+    //折线图2用：cure 新增治愈 dead 新增死亡
+    JSONArray cureArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        cureArray.add(jsonObject.get("cure"));
+    }
+
+    JSONArray deadArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        deadArray.add(jsonObject.get("dead"));
+    }
+
+    //折线图3用：cureRate 治愈率 deadRate死亡率
+    JSONArray cureRateArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        cureRateArray.add(jsonObject.get("cureRate"));
+    }
+
+    JSONArray deadRateArray = new JSONArray();
+    for (Object object : lineChartData){
+        JSONObject jsonObject = (JSONObject) object;
+        deadRateArray.add(jsonObject.get("deadRate"));
+    }
 %>
 <html>
 <head>
@@ -27,16 +71,28 @@
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=data%>);
+        console.log(<%=lineChartData%>);
         $(document).ready(function(){
             //绘制地图
             //  drawMap();
-            distinguishColor(<%=data%>);
+            distinguishColor(<%=totalData%>);
              //绘制趋势图1
-            drawLineChart1();
+            drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
             //隐藏图2和图3
             $("#lineChart3").hide();
             $("#lineChart2").hide();
+
+            $("#showLineChart1").click(function(){
+                drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
+            });
+
+            $("#showLineChart2").click(function(){
+                drawLineChart2(<%=dateArray%>, <%=cureArray%>, <%=deadArray%>);
+            });
+
+            $("#showLineChart3").click(function(){
+                drawLineChart3(<%=dateArray%>, <%=cureRateArray%>, <%=deadRateArray%>);
+            });
         });
     </script>
 </head>
@@ -137,9 +193,9 @@
 
                 <!-- 切换趋势图按钮 -->
                 <ul class="changeTendency">
-                    <li><a id="showLineChart1" href="javascript:drawLineChart1()">新增确诊/疑似</a></li>
-                    <li><a id="showLineChart2" href="javascript:drawLineChart2()">累计治愈/死亡</a></li>
-                    <li><a id="showLineChart3" href="javascript:drawLineChart3()">治愈率/死亡率</a></li>
+                    <li><a id="showLineChart1" href="javascript:void(0)">新增确诊/疑似</a></li>
+                    <li><a id="showLineChart2" href="javascript:void(0)">累计治愈/死亡</a></li>
+                    <li><a id="showLineChart3" href="javascript:void(0)">治愈率/死亡率</a></li>
                 </ul>
 
                 <!-- 趋势图图表 -->
@@ -172,7 +228,7 @@
                             <th style="background-color: #00BFBF">累计治愈</th>
                         </tr>
                         <%
-                            JSONArray jsonData = (JSONArray)data;
+                            JSONArray jsonData = (JSONArray)totalData;
                             for(int i=0; i< jsonData.size(); i++){
                                 JSONObject objData = jsonData.getJSONObject(i);%>
                               <tr><td><%=objData.getString("name")%></td>
