@@ -283,7 +283,7 @@ ul.nav a:hover{
     list-style: none;
     padding: 0;
     background: #F59A23;
-    width: 32%;
+    width: 281px;
     /*解决高度塌陷*/
     overflow: hidden;
     /*圆角*/
@@ -317,11 +317,29 @@ ul.nav a:hover{
     background-color: #288ADE;
 }
 
-#lineChart{
+#lineChart1{
     width: 75%;
     height: 400px;
     margin: 40px auto; /*居中*/
 }
+
+#lineChart2{
+    position: relative;
+    /*top:-400px;*/
+    width: 75%;
+    height: 400px;
+    margin: 40px auto; /*居中*/
+}
+
+
+#lineChart3{
+    position: relative;
+    /*top: -840px;*/
+    width: 75%;
+    height: 400px;
+    margin: 40px auto; /*居中*/
+}
+
 
 
 /*表格数据部分*/
