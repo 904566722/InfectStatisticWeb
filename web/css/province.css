@@ -63,7 +63,8 @@ body{
     margin: 0;
     text-align: left;
     position: relative;
-    left: 5%;
+    left: 10px;
+    top: 7px;
     width: 45%;
     height: 20px;
     font-size: 14px;

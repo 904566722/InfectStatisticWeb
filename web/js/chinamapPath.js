@@ -147,9 +147,7 @@ function paintMap(R) {
     };
 }
 
-
-
-window.onload = function () {
+function drawMap(){
     var R = Raphael("map", 600, 500);
 
 
@@ -165,37 +163,49 @@ window.onload = function () {
 
 
 
-    //对应省份加上身份名称，以及鼠标划向每个省份区块的动画        
+    //对应省份加上身份名称，以及鼠标划向每个省份区块的动画
     for (var state in china) {
         china[state]['path'].color = Raphael.getColor(0.9);
 
         (function (st, state) {
 
-            //获取当前图形的中心坐标 
+            //获取当前图形的中心坐标
             var xx = st.getBBox().x + (st.getBBox().width / 2);
             var yy = st.getBBox().y + (st.getBBox().height / 2);
 
-            if (china[state]['name'] == '澳门') {
-                yy += 10;
-            }else if (china[state]['name'] == '香港') {
-                xx += 20;
-            }else if (china[state]['name'] == '广东') {
-                xx -= 10;
-            }else if (china[state]['name'] == '内蒙古') {
-                yy += 50;
+            //修正偏移量
+            switch (china[state]['name']) {
+                case '澳门':
+                    yy += 10;
+                case '香港':
+                    xx += 20;
+                case '广东':
+                    xx -= 10;
+                    yy -= 70;
+                case '内蒙古':
+                    yy +=  50;
+                case '天津':
+                    xx += 30;
+                    yy += 10;
+                case '河北':
+                    xx -= 15;
+                    yy += 10;
+                case '北京':
+                    yy -= 10;
+
             }
 
 
-            //写入文字 
+            //写入文字
             china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
 
-            st[0].onmouseover = function () {//鼠标滑向 
+            st[0].onmouseover = function () {//鼠标滑向
                 st.animate({fill: st.color, stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
             };
 
-            st[0].onmouseout = function () {//鼠标离开 
+            st[0].onmouseout = function () {//鼠标离开
                 st.animate({fill: "#97d6f5", stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
@@ -214,50 +224,261 @@ window.onload = function () {
         })(china[state]['path'], state);
 
     }
-
-    //修正偏移量
-    for (var state in china) {
-        (function (st, state) {
-            switch (china[state]['name']) {
-                case "江苏":
-                    xx += 5;
-                    yy -= 10;
-                    break;
-                case "河北":
-                    xx -= 10;
-                    yy += 20;
-                    break;
-                case "天津":
-                    xx += 10;
-                    yy += 10;
-                    break;
-                case "上海":
-                    xx += 10;
-                    break;
-                case "广东":
-                    yy -= 10;
-                    break;
-                case "澳门":
-                    yy += 30;
-                    break;
-                case "香港":
-                    xx += 20;
-                    yy += 5;
-                    break;
-                case "甘肃":
-                    xx -= 40;
-                    yy -= 30;
-                    break;
-                case "陕西":
-                    xx += 5;
-                    yy += 10;
-                    break;
-                case "内蒙古":
-                    xx -= 15;
-                    yy += 65;
-                    break;
-                default:
-            }
-        })(china[state]['path'], state);
-    }
 }
+
+
+/*
+* 根据后台传入的json数据渲染颜色
+*
+ */
+function distinguishColor(json){
+    //1. 获得数据--json格式
+    //2. json转换为数组
+    var data = string2Array(json)
+
+    var rank;   //等级
+    var arr = new Array();
+    //3. 遍历数组，做等级区分
+    for(var item in arr){
+        //arr[item].name
+        //arr[item].eip     esp     tip       tsp      cure     dead
+        //        现存确诊 现存疑似 累计确诊 累计疑似  累计治愈   累计死亡
+
+        var d = arr[item].eip;
+        if(d == 0){
+            rank = 0;
+        }else if(0<d && d<10){
+            rank = 1;
+        }else if(10<=d && d<100){
+            rank = 2;
+        }else if(100<=d && d<500){
+            rank = 3;
+        }else if(500<=d && d<1000){
+            rank = 4;
+        }else if(1000<=d && d<10000){
+            rank = 5;
+        }else if(10000<=d){
+            rank = 6;
+        }
+        //等级颜色
+        var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
+
+        var R = Raphael("map", 600, 500);
+        paintMap();
+
+        var textArr = {
+            "fill" : "#000",
+            "font-size" : "12px",
+            "course" : "pointer"
+        };
+
+        var i=0;
+        for (var state in china) {
+            china[state]['path'].color = Raphael.getColor(0.9);
+            (function (st, state) {
+
+                //获取当前图形的中心坐标
+                var xx = st.getBBox().x + (st.getBBox().width / 2);
+                var yy = st.getBBox().y + (st.getBBox().height / 2);
+
+                //修改部分地图文字偏移坐标
+                switch (china[state]['name']) {
+                    case "江苏":
+                        xx += 5;
+                        yy -= 10;
+                        break;
+                    case "河北":
+                        xx -= 10;
+                        yy += 20;
+                        break;
+                    case "天津":
+                        xx += 10;
+                        yy += 10;
+                        break;
+                    case "上海":
+                        xx += 10;
+                        break;
+                    case "广东":
+                        yy -= 10;
+                        break;
+                    case "澳门":
+                        yy += 10;
+                        break;
+                    case "香港":
+                        xx += 20;
+                        yy += 5;
+                        break;
+                    case "甘肃":
+                        xx -= 40;
+                        yy -= 30;
+                        break;
+                    case "陕西":
+                        xx += 5;
+                        yy += 10;
+                        break;
+                    case "内蒙古":
+                        xx -= 15;
+                        yy += 65;
+                        break;
+                    default:
+                }
+                //写入文字
+                china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
+
+                var fillcolor = colors[arr[i]];//获取对应的颜色
+
+                st.attr({fill:fillcolor});//填充背景色
+
+                st[0].onmouseover = function () {
+                    st.animate({fill: "#fdd", stroke: "#eee"}, 500);
+                    china[state]['text'].toFront();
+                    R.safari();
+                };
+                st[0].onmouseout = function () {
+                    st.animate({fill: fillcolor, stroke: "#eee"}, 500);
+                    china[state]['text'].toFront();
+                    R.safari();
+                };
+
+            })(china[state]['path'], state);
+            i++;
+        }
+
+
+
+
+    }
+
+
+}
+
+function string2Array(string) {
+    eval("var result = " + decodeURI(string));
+    return result;
+}
+
+
+// window.onload = function () {
+//     var R = Raphael("map", 600, 500);
+//
+//
+//     //绘制地图
+//     paintMap(R);
+//
+//     //城市名
+//     var textAttr = {
+//         "fill": "#000",
+//         "font-size": "12px",
+//         "cursor": "pointer" //光标
+//     };
+//
+//
+//
+//     //对应省份加上身份名称，以及鼠标划向每个省份区块的动画
+//     for (var state in china) {
+//         china[state]['path'].color = Raphael.getColor(0.9);
+//
+//         (function (st, state) {
+//
+//             //获取当前图形的中心坐标
+//             var xx = st.getBBox().x + (st.getBBox().width / 2);
+//             var yy = st.getBBox().y + (st.getBBox().height / 2);
+//
+//             //修正偏移量
+//             switch (china[state]['name']) {
+//                 case '澳门':
+//                     yy += 10;
+//                 case '香港':
+//                     xx += 20;
+//                 case '广东':
+//                     xx -= 10;
+//                     yy -= 70;
+//                 case '内蒙古':
+//                     yy +=  50;
+//                 case '天津':
+//                     xx += 30;
+//                     yy += 10;
+//                 case '河北':
+//                     xx -= 15;
+//                     yy += 10;
+//                 case '北京':
+//                     yy -= 10;
+//
+//             }
+//
+//
+//             //写入文字
+//             china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
+//
+//             st[0].onmouseover = function () {//鼠标滑向
+//                 st.animate({fill: st.color, stroke: "#eee"}, 500);
+//                 china[state]['text'].toFront();
+//                 R.safari();
+//             };
+//
+//             st[0].onmouseout = function () {//鼠标离开
+//                 st.animate({fill: "#97d6f5", stroke: "#eee"}, 500);
+//                 china[state]['text'].toFront();
+//                 R.safari();
+//             };
+//
+//
+//             st[0].onclick = function () {
+//                 window.location.href = "jsp/province.jsp"
+//             }
+//
+//             // //点击事件
+//             // st[0].onclick = function(){
+//             //     alert("hello,你点击了我");
+//             // }
+//
+//         })(china[state]['path'], state);
+//
+//     }
+//
+//     // //修正偏移量
+//     // for (var state in china) {
+//     //     (function (st, state) {
+//     //         switch (china[state]['name']) {
+//     //             case "江苏":
+//     //                 xx += 5;
+//     //                 yy -= 10;
+//     //                 break;
+//     //             case "河北":
+//     //                 xx -= 10;
+//     //                 yy += 20;
+//     //                 break;
+//     //             case "天津":
+//     //                 xx += 10;
+//     //                 yy += 10;
+//     //                 break;
+//     //             case "上海":
+//     //                 xx += 10;
+//     //                 break;
+//     //             case "广东":
+//     //                 yy -= 10;
+//     //                 break;
+//     //             case "澳门":
+//     //                 yy += 30;
+//     //                 break;
+//     //             case "香港":
+//     //                 xx += 20;
+//     //                 yy += 5;
+//     //                 break;
+//     //             case "甘肃":
+//     //                 xx -= 40;
+//     //                 yy -= 30;
+//     //                 break;
+//     //             case "陕西":
+//     //                 xx += 5;
+//     //                 yy += 10;
+//     //                 break;
+//     //             case "内蒙古":
+//     //                 xx -= 15;
+//     //                 yy += 65;
+//     //                 break;
+//     //             default:
+//     //         }
+//     //     })(china[state]['path'], state);
+//     // }
+// }
