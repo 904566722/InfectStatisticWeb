@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class DataDAO {
 
-    public JSONArray getTotalData(String endDate) {
+    public JSONArray getTotalData(String endDate, String province) {
         String[] provinceString = {"全国", "安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南",
                 "河北", "河南", "黑龙江", "湖北", "湖南", "吉林", "江苏", "江西", "辽宁", "内蒙古", "宁夏", "青海", "山东",
                 "山西", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南", "浙江", "台湾", "香港", "澳门"};
@@ -23,24 +23,46 @@ public class DataDAO {
             }
         }
 
-        try (Connection connection = DBConnect.getConnection()) {
-            Statement statement = connection.createStatement();
-            String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "'";
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                for (int i = 0; i < provinceString.length; i++) {
-                    if (provinceString[i].equals(resultSet.getString("province"))) {
-                        patient[i][0] += resultSet.getInt("eip");
-                        patient[i][1] += resultSet.getInt("esp");
-                        patient[i][2] += resultSet.getInt("tip");
-                        patient[i][3] += resultSet.getInt("tsp");
-                        patient[i][4] += resultSet.getInt("cure");
-                        patient[i][5] += resultSet.getInt("dead");
+        if (province.equals("全国")) {
+            try (Connection connection = DBConnect.getConnection()) {
+                Statement statement = connection.createStatement();
+                String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    for (int i = 0; i < provinceString.length; i++) {
+                        if (provinceString[i].equals(resultSet.getString("province"))) {
+                            patient[i][0] += resultSet.getInt("eip");
+                            patient[i][1] += resultSet.getInt("esp");
+                            patient[i][2] += resultSet.getInt("tip");
+                            patient[i][3] += resultSet.getInt("tsp");
+                            patient[i][4] += resultSet.getInt("cure");
+                            patient[i][5] += resultSet.getInt("dead");
+                        }
                     }
                 }
+            } catch(SQLException e) {
+                e.printStackTrace();
             }
-        } catch(SQLException e) {
-            e.printStackTrace();
+        } else {
+            try (Connection connection = DBConnect.getConnection()) {
+                Statement statement = connection.createStatement();
+                String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "' AND province = '" + province + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    for (int i = 0; i < provinceString.length; i++) {
+                        if (provinceString[i].equals(resultSet.getString("province"))) {
+                            patient[i][0] += resultSet.getInt("eip");
+                            patient[i][1] += resultSet.getInt("esp");
+                            patient[i][2] += resultSet.getInt("tip");
+                            patient[i][3] += resultSet.getInt("tsp");
+                            patient[i][4] += resultSet.getInt("cure");
+                            patient[i][5] += resultSet.getInt("dead");
+                        }
+                    }
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -58,8 +80,46 @@ public class DataDAO {
         return jsonArray;
     }
 
-    /*public static void main(String[] args) {
+    public JSONArray getDailyData(String endDate, String province) {
+        double ip = 0;
+        double cure = 0;
+        double dead = 0;
+        JSONArray jsonArray = new JSONArray();
+        try (Connection connection = DBConnect.getConnection()) {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "' AND province = '" + province + "'";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                ip += resultSet.getInt("tip");
+                cure += resultSet.getInt("cure");
+                dead += resultSet.getInt("dead");
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("date", resultSet.getString("date"));
+                jsonObject.put("ip", resultSet.getInt("tip"));
+                jsonObject.put("sp", resultSet.getInt("tsp"));
+                jsonObject.put("cure", cure);
+                jsonObject.put("dead", dead);
+                if (ip != 0 && cure != 0) {
+                    jsonObject.put("cureRate", String.format("%.3f", cure / ip));
+                } else {
+                    jsonObject.put("cureRate", 0);
+                }
+                if (ip != 0 && dead != 0) {
+                    jsonObject.put("deadRate", String.format("%.3f", dead / ip));
+                } else {
+                    jsonObject.put("deadRate", 0);
+                }
+                jsonArray.add(jsonObject);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
+    public static void main(String[] args) {
         DataDAO dataDAO = new DataDAO();
-        System.out.println(dataDAO.getTotalData("2020-02-01"));
-    }*/
+        System.out.println(dataDAO.getTotalData("2020-02-01", "全国"));
+        System.out.println(dataDAO.getDailyData("2020-02-01", "全国"));
+    }
 }
