@@ -55,20 +55,20 @@ function drawChart1(date, ip, sp){
 }
 
 //绘制趋势图3
-function drawChart2(date, cure, dead){
+function drawChart2(date, cureRate, deadRate){
     // step2. 基于准备好的dom，初始化echarts实例
     var chart2 = echarts.init(document.getElementById('chart2'));
 
     // step3. 指定图表的配置项和数据
     var option = {
         title: {
-            text: '新增确诊/新增疑似'
+            text: '治愈率/死亡率'
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['新增确诊', '新增疑似']
+            data: ['治愈率', '死亡率']
         },
         grid: {
             left: '3%',
@@ -92,16 +92,16 @@ function drawChart2(date, cure, dead){
         },
         series: [
             {
-                name: '新增确诊',
+                name: '治愈率',
                 type: 'line',
                 stack: '总量',
-                data: cure,
+                data: cureRate,
             },
             {
-                name: '新增疑似',
+                name: '死亡率',
                 type: 'line',
                 stack: '总量',
-                data: dead,
+                data: deadRate,
             },
         ]
     };

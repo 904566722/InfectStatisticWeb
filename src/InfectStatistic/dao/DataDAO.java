@@ -225,13 +225,13 @@ public class DataDAO {
         }
         return jsonArray;
     }
-
-    /*public static void main(String[] args) {
-        DataDAO dataDAO = new DataDAO();
-        System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
-        System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
-        System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
-        System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
-    }*/
+//
+//    public static void main(String[] args) {
+//        DataDAO dataDAO = new DataDAO();
+//        System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
+//        System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
+//        System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
+//        System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
+//    }
 
 }

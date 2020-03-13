@@ -74,16 +74,16 @@ To change this template use File | Settings | File Templates.
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <script type="text/javascript" src="./js/raphael.js"></script>
-    <script type="text/javascript" src="./js/chinamapPath.js"></script>
-    <script type="text/javascript" src="./js/jquery.js"></script>
-    <script type="text/javascript" src="./js/test.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=path%>/css/index.css">
+    <script type="text/javascript" src="<%=path%>/js/raphael.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/chinamapPath.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/test.js"></script>
 
     <title>index</title>
 
     <script type="text/javascript">
-        <%--console.log(<%=path%>);--%>
+        console.log(<%=totalData%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
@@ -126,10 +126,6 @@ To change this template use File | Settings | File Templates.
     </script>
 </head>
 <body>
-
-
-
-
     <!-- <div id="map"></div> -->
     <div id="main">
         <div id="leftPart">

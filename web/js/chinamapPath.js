@@ -394,7 +394,7 @@ function distinguishColorEip(json, path){
             };
 
             st[0].onclick = function () {
-                window.location.href = path + "/DataServlet?action=getProvinceData";
+                window.location.href = path + "/DataServlet?action=getProvinceData&province=" + china[state]['name'];
             }
 
         })(china[state]['path'], state);
@@ -505,15 +505,17 @@ function distinguishColorTip(json){
                 st.animate({fill: "#fdd", stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
+                displayProvinceInfo(data[indexOfData[state]]);
             };
             st[0].onmouseout = function () {
                 st.animate({fill: fillcolor, stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
+                $("#provinceInfo").hide();
             };
 
             st[0].onclick = function () {
-                window.location.href = "jsp/province.jsp"
+                window.location.href = path + "/DataServlet?action=getProvinceData&province=" + china[state]['name'];
             }
 
         })(china[state]['path'], state);
