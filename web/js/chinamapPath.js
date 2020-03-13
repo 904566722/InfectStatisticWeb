@@ -231,7 +231,7 @@ function drawMap(){
 * 根据后台传入的json数据渲染颜色
 *
  */
-function distinguishColor(json){
+function distinguishColorEip(json){
     //1. 获得数据--json格式
     //2. json转换为数组
     var data = string2Array(JSON.stringify(json));
@@ -260,7 +260,126 @@ function distinguishColor(json){
     var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
 
     //地图绘制
-    var R = Raphael("map", 600, 500);
+    var R = Raphael("map1", 600, 500);
+    paintMap(R);
+    var textAttr = {
+        "fill" : "#000",
+        "font-size" : "12px",
+        "course" : "pointer"
+    };
+
+    var i = 0;
+    for(var state in china){
+        china[state]['path'].color = Raphael.getColor(0.9);
+        (function (st, state) {
+
+            //获取当前图形的中心坐标
+            var xx = st.getBBox().x + (st.getBBox().width / 2);
+            var yy = st.getBBox().y + (st.getBBox().height / 2);
+
+            //修改部分地图文字偏移坐标
+            switch (china[state]['name']) {
+                case "江苏":
+                    xx += 5;
+                    yy -= 10;
+                    break;
+                case "河北":
+                    xx -= 10;
+                    yy += 20;
+                    break;
+                case "天津":
+                    xx += 10;
+                    yy += 10;
+                    break;
+                case "上海":
+                    xx += 10;
+                    break;
+                case "广东":
+                    yy -= 10;
+                    break;
+                case "澳门":
+                    yy += 10;
+                    break;
+                case "香港":
+                    xx += 20;
+                    yy += 5;
+                    break;
+                case "甘肃":
+                    xx -= 40;
+                    yy -= 30;
+                    break;
+                case "陕西":
+                    xx += 5;
+                    yy += 10;
+                    break;
+                case "内蒙古":
+                    xx -= 15;
+                    yy += 65;
+                    break;
+                default:
+            }
+            //写入文字
+            china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
+
+            var fillcolor = colors[arr[i]];//获取对应的颜色
+
+            st.attr({fill:fillcolor});//填充背景色
+
+            st[0].onmouseover = function () {
+                st.animate({fill: "#fdd", stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+            st[0].onmouseout = function () {
+                st.animate({fill: fillcolor, stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+
+            st[0].onclick = function () {
+                window.location.href = "jsp/province.jsp"
+            }
+
+        })(china[state]['path'], state);
+        i++;
+    }
+
+}
+
+/*
+* 根据后台传入的json数据渲染颜色
+*
+ */
+function distinguishColorTip(json){
+    //1. 获得数据--json格式
+    //2. json转换为数组
+    var data = string2Array(JSON.stringify(json));
+    var flag;
+    var arr = new Array();
+    for(var i=0; i<data.length; i++){
+        var d = data[i].tip;
+        if(d == 0){
+            rank = 0;
+        }else if(0<d && d<10){
+            rank = 1;
+        }else if(10<=d && d<100){
+            rank = 2;
+        }else if(100<=d && d<500){
+            rank = 3;
+        }else if(500<=d && d<1000){
+            rank = 4;
+        }else if(1000<=d && d<10000){
+            rank = 5;
+        }else if(10000<=d){
+            rank = 6;
+        }
+        arr.push(rank);
+    }
+    //定义颜色
+    var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
+
+    //地图绘制
+    var R = Raphael("map2", 600, 500);
     paintMap(R);
     var textAttr = {
         "fill" : "#000",
@@ -480,66 +599,7 @@ function string2Array(string) {
 
 
 //绘制趋势图1
-function drawLineChart1(){
-    // step2. 基于准备好的dom，初始化echarts实例
-    var lineChart1 = echarts.init(document.getElementById('lineChart1'));
-    // var lineChart2 = echarts.init(document.getElementById('lineChart2'));
-    // var lineChart3 = echarts.init(document.getElementById('lineChart3'));
-
-    lineChart2.display = null;
-    lineChart3.display = null;
-    // step3. 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '新增确诊/新增疑似'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['新增确诊', '新增疑似']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name: '新增确诊',
-                type: 'line',
-                stack: '总量',
-                data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-                name: '新增疑似',
-                type: 'line',
-                stack: '总量',
-                data: [220, 182, 191, 234, 290, 330, 310]
-            },
-        ]
-    };
-
-    // step4. 使用刚指定的配置项和数据显示图表。
-    lineChart1.setOption(option);
-}
-
-//绘制趋势图1
-function drawLineChart1(){
+function drawLineChart1(date, ip, sp){
 
     // $("#showLineChart1 a").css("background-color","#288ADE");
     $("#showLineChart1").css("background-color","#288ADE");
@@ -578,7 +638,7 @@ function drawLineChart1(){
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: date,
 
         },
         yAxis: {
@@ -589,13 +649,96 @@ function drawLineChart1(){
                 name: '新增确诊',
                 type: 'line',
                 stack: '总量',
-                data: [120, 132, 101, 134, 90, 230, 210]
+                data: ip,
             },
             {
                 name: '新增疑似',
                 type: 'line',
                 stack: '总量',
-                data: [220, 182, 191, 234, 290, 330, 310]
+                data: sp,
+            },
+        ]
+    };
+
+    // step4. 使用刚指定的配置项和数据显示图表。
+    lineChart1.setOption(option);
+}
+
+function drawLineChart12(json) {
+
+    alert("12");
+
+    // $("#showLineChart1 a").css("background-color","#288ADE");
+    $("#showLineChart1").css("background-color","#288ADE");
+    $("#showLineChart2").css("background-color","#F59A23");
+    $("#showLineChart3").css("background-color","#F59A23");
+
+    $("#lineChart1").show();
+    $("#lineChart3").hide();
+    $("#lineChart2").hide();
+
+    // step2. 基于准备好的dom，初始化echarts实例
+    var lineChart1 = echarts.init(document.getElementById('lineChart1'));
+
+    // // step3. 指定图表的配置项和数据
+    // var xx = new Array(json.length);
+    // var ip = new Array(json.length);
+    // var sp = new Array(json.length);
+    //
+    // for(var i=0; i<json.length; i++){
+    //     xx[i] = json[i].date;
+    //     ip[i] = json[i].ip;
+    //     sp[i] = json[i].sp;
+    // }
+    var xx = ["2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24", "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31", "2020-02-01", "2020-02-02", "2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24", "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31", "2020-02-01", "2020-02-02"];
+
+    var ipp = [2, 5, 307, 153, 179, 273, 445, 709, 769, 1784, 1480, 1743, 2024, 2044, 2586, 2, 5, 307, 153, 179, 273, 445, 709, 769, 1784, 1480, 1743, 2024, 2044, 2586];
+
+    var spp = [0, 0, 6, 35, 3, 8, 37, 78, 146, 202, 188, 267, 253, 273, 284, 0, 0, 6, 35, 3, 8, 37, 78, 146, 202, 188, 267, 253, 273, 284];
+
+    // step3. 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '新增确诊/新增疑似'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['新增确诊', '新增疑似']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: xx,
+
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '新增确诊',
+                type: 'line',
+                stack: '总量',
+                data: ipp,
+            },
+            {
+                name: '新增疑似',
+                type: 'line',
+                stack: '总量',
+                data: spp,
             },
         ]
     };
@@ -606,7 +749,7 @@ function drawLineChart1(){
 
 
 //绘制趋势图2
-function drawLineChart2(){
+function drawLineChart2(date, cure, dead){
     $("#showLineChart1").css("background-color","#F59A23");
     $("#showLineChart2").css("background-color","#288ADE");
     $("#showLineChart3").css("background-color","#F59A23");
@@ -645,7 +788,7 @@ function drawLineChart2(){
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: date,
 
         },
         yAxis: {
@@ -656,13 +799,13 @@ function drawLineChart2(){
                 name: '累计治愈',
                 type: 'line',
                 stack: '总量',
-                data: [120, 132, 101, 134, 90, 230, 210]
+                data: cure
             },
             {
                 name: '累计死亡',
                 type: 'line',
                 stack: '总量',
-                data: [220, 182, 191, 234, 290, 330, 310]
+                data: dead
             },
         ]
     };
@@ -672,7 +815,7 @@ function drawLineChart2(){
 }
 
 //绘制趋势图3
-function drawLineChart3(){
+function drawLineChart3(date, cureRate, deadRate){
 
     $("#showLineChart1").css("background-color","#F59A23");
     $("#showLineChart2").css("background-color","#F59A23");
@@ -712,7 +855,7 @@ function drawLineChart3(){
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: date,
 
         },
         yAxis: {
@@ -723,13 +866,13 @@ function drawLineChart3(){
                 name: '治愈率',
                 type: 'line',
                 stack: '总量',
-                data: [120, 132, 101, 134, 90, 230, 210]
+                data: cureRate,
             },
             {
                 name: '死亡率',
                 type: 'line',
                 stack: '总量',
-                data: [220, 182, 191, 234, 290, 330, 310]
+                data: deadRate,
             },
         ]
     };
