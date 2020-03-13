@@ -12,6 +12,7 @@ To change this template use File | Settings | File Templates.
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    String path=request.getContextPath();
     Object totalData = request.getAttribute("totalData");
     JSONArray toatlDataJson = (JSONArray)totalData;
     JSONObject wholeNationData = null;
@@ -21,6 +22,8 @@ To change this template use File | Settings | File Templates.
             wholeNationData = jsonObject;
         }
     }
+
+    //折线图绘制需要用到的数据
     JSONArray lineChartData = (JSONArray) request.getAttribute("dailyData");
     JSONArray dateArray = new JSONArray();
     for (Object object : lineChartData){
@@ -41,7 +44,7 @@ To change this template use File | Settings | File Templates.
         spArray.add(jsonObject.get("sp"));
     }
 
-    //折线图2用：cure 新增治愈 dead 新增死亡
+    //折线图2用：cure 累计治愈 dead 累计死亡
     JSONArray cureArray = new JSONArray();
     for (Object object : lineChartData){
         JSONObject jsonObject = (JSONObject) object;
@@ -67,6 +70,7 @@ To change this template use File | Settings | File Templates.
         deadRateArray.add(jsonObject.get("deadRate"));
     }
 %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -79,11 +83,11 @@ To change this template use File | Settings | File Templates.
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=wholeNationData%>);
+        <%--console.log(<%=path%>);--%>
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
-            distinguishColorEip(<%=totalData%>);
+            distinguishColorEip(<%=totalData%>, "<%=path%>");
             distinguishColorTip(<%=totalData%>);
             $("#map2").hide();
 
@@ -99,7 +103,7 @@ To change this template use File | Settings | File Templates.
                 $("#map2").show();
             });
 
-             //展示趋势图1
+            //展示趋势图1
             drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
             //隐藏趋势图2和趋势图3
             $("#lineChart3").hide();
@@ -117,11 +121,15 @@ To change this template use File | Settings | File Templates.
                 drawLineChart3(<%=dateArray%>, <%=cureRateArray%>, <%=deadRateArray%>);
             });
 
+            $("#provinceInfo").hide();
         });
-
     </script>
 </head>
 <body>
+
+
+
+
     <!-- <div id="map"></div> -->
     <div id="main">
         <div id="leftPart">
@@ -275,7 +283,43 @@ To change this template use File | Settings | File Templates.
 
 
         <div id="rightPart">
-
+            <div id="provinceInfo">
+                <div id="infoProvinceName">
+                    <p></p>
+                </div>
+                <div id="infoProvinceIp">
+                    <div class="infoLeft">
+                        <strong>现存确诊</strong>
+                    </div>
+                    <div id="infoIp">
+                        <p></p>
+                    </div>
+                </div>
+                <div id="infoProvinceSp">
+                    <div class="infoLeft">
+                        <strong>现存疑似</strong>
+                    </div>
+                    <div id="infoSp">
+                        <p></p>
+                    </div>
+                </div>
+                <div id="infoProvinceCure">
+                    <div class="infoLeft">
+                        <strong>累计治愈</strong>
+                    </div>
+                    <div id="infoCure">
+                        <p></p>
+                    </div>
+                </div>
+                <div id="infoProvinceDead">
+                    <div class="infoLeft">
+                        <strong>累计死亡</strong>
+                    </div>
+                    <div id="infoDead">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

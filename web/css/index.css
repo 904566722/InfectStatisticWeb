@@ -395,4 +395,83 @@ ul.nav a:hover{
     top: -2040px;
 }
 
+#provinceInfo{
+    position: relative;
+    top: -500px;
+    width: 92px;
+    height: 200px;
+    text-align: center;
+}
+
+#provinceInfo strong{
+    font-size: 15px;
+}
+
+#infoProvinceName{
+    width: 100%;
+    height: 20%;
+    background: #82d9f7;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+#infoProvinceIp{
+    width: 100%;
+    height: 20%;
+    background: #F59A23;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+#infoIp{
+    position: relative;
+    top: -16px;
+}
+
+#infoProvinceSp{
+    width: 100%;
+    height: 20%;
+    background: #f78207;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+#infoSp{
+    position: relative;
+    top: -16px;
+}
+
+#infoProvinceCure{
+    width: 100%;
+    height: 20%;
+    background: #28b7a3;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+#infoCure{
+    position: relative;
+    top: -16px;
+}
+
+#infoProvinceDead{
+    width: 100%;
+    height: 20%;
+    background: #5d7092;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+#infoDead{
+    position: relative;
+    top: -16px;
+}
+
+
 /**************  右边部分 END *********************/

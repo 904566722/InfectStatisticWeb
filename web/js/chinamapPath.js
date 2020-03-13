@@ -1,5 +1,42 @@
 var china = [];
 
+var indexOfData = [];
+
+indexOfData.aomen = 0;
+indexOfData.hk = 1;
+indexOfData.taiwan = 2;
+indexOfData.guangdong = 3;
+indexOfData.gx = 4;
+indexOfData.hainan = 5;
+indexOfData.yunnan = 6;
+indexOfData.fujian = 7;
+indexOfData.jiangxi = 8;
+indexOfData.hunan = 9;
+indexOfData.guizhou = 10;
+indexOfData.zhejiang = 11;
+indexOfData.anhui = 12;
+indexOfData.shanghai = 13;
+indexOfData.jiangsu = 14;
+indexOfData.hubei = 15;
+indexOfData.xizang = 16;
+indexOfData.qinghai = 17;
+indexOfData.gansu = 18;
+indexOfData.xinjiang = 19;
+indexOfData.shanxi = 20;
+indexOfData.henan = 21;
+indexOfData.shanxis = 22;
+indexOfData.shandong = 23;
+indexOfData.hebei = 24;
+indexOfData.tianjin = 25;
+indexOfData.beijing = 26;
+indexOfData.ningxia = 27;
+indexOfData.neimeng = 28;
+indexOfData.liaoning = 29;
+indexOfData.jilin = 30;
+indexOfData.heilongjiang = 31;
+indexOfData.chongqing = 32;
+indexOfData.sichuan = 33;
+
 function paintMap(R) {
     var attr = {
         "fill": "#97d6f5",
@@ -227,11 +264,20 @@ function drawMap(){
 }
 
 
+function displayProvinceInfo(info) {
+    $("#infoProvinceName p").text(info.name);
+    $("#infoIp p").text(info.eip);
+    $("#infoSp p").text(info.esp);
+    $("#infoCure p").text(info.cure);
+    $("#infoDead p").text(info.dead);
+    $("#provinceInfo").slideDown("slow");
+}
+
 /*
 * 根据后台传入的json数据渲染颜色
 *
  */
-function distinguishColorEip(json){
+function distinguishColorEip(json, path){
     //1. 获得数据--json格式
     //2. json转换为数组
     var data = string2Array(JSON.stringify(json));
@@ -269,10 +315,17 @@ function distinguishColorEip(json){
     };
 
     var i = 0;
+    var j = 0;
     for(var state in china){
+
+        // if(state == 'aomen'){
+        //     console.log(data[indexOfData['aomen']].name);
+        // }
+
         china[state]['path'].color = Raphael.getColor(0.9);
         (function (st, state) {
 
+            // console.log(china[state]['name']);
             //获取当前图形的中心坐标
             var xx = st.getBBox().x + (st.getBBox().width / 2);
             var yy = st.getBBox().y + (st.getBBox().height / 2);
@@ -329,15 +382,19 @@ function distinguishColorEip(json){
                 st.animate({fill: "#fdd", stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
+                // $("#provinceInfo").show();
+                displayProvinceInfo(data[indexOfData[state]]);
             };
             st[0].onmouseout = function () {
                 st.animate({fill: fillcolor, stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
+                $("#provinceInfo").hide();
+                // displayProvinceInfo(data[indexOfData[state]]);
             };
 
             st[0].onclick = function () {
-                window.location.href = "jsp/province.jsp"
+                window.location.href = path + "/DataServlet?action=getProvinceData";
             }
 
         })(china[state]['path'], state);
@@ -471,133 +528,6 @@ function string2Array(string) {
     return result;
 }
 
-
-// window.onload = function () {
-//     var R = Raphael("map", 600, 500);
-//
-//
-//     //绘制地图
-//     paintMap(R);
-//
-//     //城市名
-//     var textAttr = {
-//         "fill": "#000",
-//         "font-size": "12px",
-//         "cursor": "pointer" //光标
-//     };
-//
-//
-//
-//     //对应省份加上身份名称，以及鼠标划向每个省份区块的动画
-//     for (var state in china) {
-//         china[state]['path'].color = Raphael.getColor(0.9);
-//
-//         (function (st, state) {
-//
-//             //获取当前图形的中心坐标
-//             var xx = st.getBBox().x + (st.getBBox().width / 2);
-//             var yy = st.getBBox().y + (st.getBBox().height / 2);
-//
-//             //修正偏移量
-//             switch (china[state]['name']) {
-//                 case '澳门':
-//                     yy += 10;
-//                 case '香港':
-//                     xx += 20;
-//                 case '广东':
-//                     xx -= 10;
-//                     yy -= 70;
-//                 case '内蒙古':
-//                     yy +=  50;
-//                 case '天津':
-//                     xx += 30;
-//                     yy += 10;
-//                 case '河北':
-//                     xx -= 15;
-//                     yy += 10;
-//                 case '北京':
-//                     yy -= 10;
-//
-//             }
-//
-//
-//             //写入文字
-//             china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
-//
-//             st[0].onmouseover = function () {//鼠标滑向
-//                 st.animate({fill: st.color, stroke: "#eee"}, 500);
-//                 china[state]['text'].toFront();
-//                 R.safari();
-//             };
-//
-//             st[0].onmouseout = function () {//鼠标离开
-//                 st.animate({fill: "#97d6f5", stroke: "#eee"}, 500);
-//                 china[state]['text'].toFront();
-//                 R.safari();
-//             };
-//
-//
-//             st[0].onclick = function () {
-//                 window.location.href = "jsp/province.jsp"
-//             }
-//
-//             // //点击事件
-//             // st[0].onclick = function(){
-//             //     alert("hello,你点击了我");
-//             // }
-//
-//         })(china[state]['path'], state);
-//
-//     }
-//
-//     // //修正偏移量
-//     // for (var state in china) {
-//     //     (function (st, state) {
-//     //         switch (china[state]['name']) {
-//     //             case "江苏":
-//     //                 xx += 5;
-//     //                 yy -= 10;
-//     //                 break;
-//     //             case "河北":
-//     //                 xx -= 10;
-//     //                 yy += 20;
-//     //                 break;
-//     //             case "天津":
-//     //                 xx += 10;
-//     //                 yy += 10;
-//     //                 break;
-//     //             case "上海":
-//     //                 xx += 10;
-//     //                 break;
-//     //             case "广东":
-//     //                 yy -= 10;
-//     //                 break;
-//     //             case "澳门":
-//     //                 yy += 30;
-//     //                 break;
-//     //             case "香港":
-//     //                 xx += 20;
-//     //                 yy += 5;
-//     //                 break;
-//     //             case "甘肃":
-//     //                 xx -= 40;
-//     //                 yy -= 30;
-//     //                 break;
-//     //             case "陕西":
-//     //                 xx += 5;
-//     //                 yy += 10;
-//     //                 break;
-//     //             case "内蒙古":
-//     //                 xx -= 15;
-//     //                 yy += 65;
-//     //                 break;
-//     //             default:
-//     //         }
-//     //     })(china[state]['path'], state);
-//     // }
-// }
-
-
 //绘制趋势图1
 function drawLineChart1(date, ip, sp){
 
@@ -663,90 +593,6 @@ function drawLineChart1(date, ip, sp){
     // step4. 使用刚指定的配置项和数据显示图表。
     lineChart1.setOption(option);
 }
-
-function drawLineChart12(json) {
-
-    alert("12");
-
-    // $("#showLineChart1 a").css("background-color","#288ADE");
-    $("#showLineChart1").css("background-color","#288ADE");
-    $("#showLineChart2").css("background-color","#F59A23");
-    $("#showLineChart3").css("background-color","#F59A23");
-
-    $("#lineChart1").show();
-    $("#lineChart3").hide();
-    $("#lineChart2").hide();
-
-    // step2. 基于准备好的dom，初始化echarts实例
-    var lineChart1 = echarts.init(document.getElementById('lineChart1'));
-
-    // // step3. 指定图表的配置项和数据
-    // var xx = new Array(json.length);
-    // var ip = new Array(json.length);
-    // var sp = new Array(json.length);
-    //
-    // for(var i=0; i<json.length; i++){
-    //     xx[i] = json[i].date;
-    //     ip[i] = json[i].ip;
-    //     sp[i] = json[i].sp;
-    // }
-    var xx = ["2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24", "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31", "2020-02-01", "2020-02-02", "2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24", "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31", "2020-02-01", "2020-02-02"];
-
-    var ipp = [2, 5, 307, 153, 179, 273, 445, 709, 769, 1784, 1480, 1743, 2024, 2044, 2586, 2, 5, 307, 153, 179, 273, 445, 709, 769, 1784, 1480, 1743, 2024, 2044, 2586];
-
-    var spp = [0, 0, 6, 35, 3, 8, 37, 78, 146, 202, 188, 267, 253, 273, 284, 0, 0, 6, 35, 3, 8, 37, 78, 146, 202, 188, 267, 253, 273, 284];
-
-    // step3. 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '新增确诊/新增疑似'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['新增确诊', '新增疑似']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: xx,
-
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name: '新增确诊',
-                type: 'line',
-                stack: '总量',
-                data: ipp,
-            },
-            {
-                name: '新增疑似',
-                type: 'line',
-                stack: '总量',
-                data: spp,
-            },
-        ]
-    };
-
-    // step4. 使用刚指定的配置项和数据显示图表。
-    lineChart1.setOption(option);
-}
-
 
 //绘制趋势图2
 function drawLineChart2(date, cure, dead){

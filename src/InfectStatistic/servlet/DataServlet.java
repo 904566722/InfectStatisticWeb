@@ -21,6 +21,8 @@ public class DataServlet extends HttpServlet {
             this.getTotalData(request, response);
         } else if (action != null && action.equals("getProvinceData")) {
             this.getProvinceData(request, response);
+        }else{
+            this.getTotalData(request, response);
         }
     }
 
@@ -39,6 +41,7 @@ public class DataServlet extends HttpServlet {
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
+        request.setAttribute("flag", 1);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
@@ -59,6 +62,6 @@ public class DataServlet extends HttpServlet {
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("province", province);
-        request.getRequestDispatcher("./jsp/province.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/province.jsp").forward(request, response);
     }
 }
