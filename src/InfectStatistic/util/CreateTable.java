@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CreateTable {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try (Connection connection = DBConnect.getConnection()) {
             connection.setAutoCommit(false);
             Statement statement = connection.createStatement();
@@ -15,5 +15,5 @@ public class CreateTable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

@@ -21,7 +21,7 @@ public class DataServlet extends HttpServlet {
             this.getTotalData(request, response);
         } else if (action != null && action.equals("getProvinceData")) {
             this.getProvinceData(request, response);
-        }else{
+        } else {
             this.getTotalData(request, response);
         }
     }
