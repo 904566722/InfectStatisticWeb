@@ -19,8 +19,8 @@ public class DataServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null && action.equals("getTotalData")) {
             this.getTotalData(request, response);
-        } else if (action != null && action.equals("getDailyData")) {
-            this.getDailyData(request, response);
+        } else if (action != null && action.equals("getProvinceData")) {
+            this.getProvinceData(request, response);
         }
     }
 
@@ -42,15 +42,23 @@ public class DataServlet extends HttpServlet {
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
-    private void getDailyData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getProvinceData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataDAO dataDAO = new DataDAO();
         String endDate = request.getParameter("endDate");
         String province = request.getParameter("province");
+        if (endDate != null) {
+        } else {
+            endDate = "2020-02-02";
+        }
+        if (province != null) {
+        } else {
+            province = "全国";
+        }
         JSONArray totalData = dataDAO.getTotalData(endDate, province);
         JSONArray dailyData = dataDAO.getDailyData(endDate, province);
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("province", province);
-        request.getRequestDispatcher("province.jsp").forward(request, response);
+        request.getRequestDispatcher("./jsp/province.jsp").forward(request, response);
     }
 }
