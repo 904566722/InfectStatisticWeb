@@ -7,13 +7,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DataDAO {
+    public String[] provinceString = {"澳门", "香港", "台湾", "广东", "广西", "海南", "云南", "福建", "江西", "湖南", "贵州",
+            "浙江", "安徽", "上海", "江苏", "湖北", "西藏", "青海", "甘肃", "新疆", "陕西", "河南", "山西", "山东",
+            "河北", "天津", "北京", "宁夏", "内蒙古", "辽宁", "吉林", "黑龙江", "重庆", "四川"};
 
     public JSONArray getTotalData(String endDate, String province) {
-        String[] provinceString = {"澳门", "香港", "台湾", "广东", "广西", "海南", "云南", "福建", "江西", "湖南", "贵州",
-                "浙江", "安徽", "上海", "江苏", "湖北", "西藏", "青海", "甘肃", "新疆", "陕西", "河南", "山西", "山东",
-                "河北", "天津", "北京", "宁夏", "内蒙古", "辽宁", "吉林", "黑龙江", "重庆", "四川", "全国"};
         String[] patientType = {"现存确诊", "现存疑似", "累计确诊", "累计疑似", "累计治愈", "累计死亡"};
         int[][] patient;
         patient = new int[provinceString.length][patientType.length];
@@ -22,16 +24,24 @@ public class DataDAO {
                 patient[i][j] = 0;
             }
         }
-        JSONArray jsonArray = new JSONArray();
 
+        JSONArray jsonArray = new JSONArray();
         if (province.equals("全国")) {
+            int eip, esp, tip, tsp, cure, dead;
+            eip = esp = tip = tsp = cure = dead = 0;
             try (Connection connection = DBConnect.getConnection()) {
                 Statement statement = connection.createStatement();
-                String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "'";
+                String sql = "SELECT * FROM DATA WHERE date = '" + endDate + "'";
                 ResultSet resultSet = statement.executeQuery(sql);
                 while (resultSet.next()) {
                     for (int i = 0; i < provinceString.length; i++) {
-                        if (provinceString[i].equals(resultSet.getString("province"))) {
+                        if (provinceString[i].equals(resultSet.getString("province"))){
+                            eip += resultSet.getInt("eip");
+                            esp += resultSet.getInt("esp");
+                            tip += resultSet.getInt("tip");
+                            tsp += resultSet.getInt("tsp");
+                            cure += resultSet.getInt("cure");
+                            dead += resultSet.getInt("dead");
                             patient[i][0] += resultSet.getInt("eip");
                             patient[i][1] += resultSet.getInt("esp");
                             patient[i][2] += resultSet.getInt("tip");
@@ -55,73 +65,160 @@ public class DataDAO {
                 jsonObject.put("dead", patient[i][5]);
                 jsonArray.add(jsonObject);
             }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", "全国");
+            jsonObject.put("eip", eip);
+            jsonObject.put("esp", esp);
+            jsonObject.put("tip", tip);
+            jsonObject.put("tsp", tsp);
+            jsonObject.put("cure", cure);
+            jsonObject.put("dead", dead);
+            jsonArray.add(jsonObject);
         } else {
             try (Connection connection = DBConnect.getConnection()) {
                 Statement statement = connection.createStatement();
-                String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "' AND province = '" + province + "'";
+                String sql = "SELECT * FROM DATA WHERE date = '" + endDate + "' AND province = '" + province + "'";
                 ResultSet resultSet = statement.executeQuery(sql);
                 while (resultSet.next()) {
-                    for (int i = 0; i < provinceString.length; i++) {
-                        if (provinceString[i].equals(resultSet.getString("province"))) {
-                            patient[i][0] += resultSet.getInt("eip");
-                            patient[i][1] += resultSet.getInt("esp");
-                            patient[i][2] += resultSet.getInt("tip");
-                            patient[i][3] += resultSet.getInt("tsp");
-                            patient[i][4] += resultSet.getInt("cure");
-                            patient[i][5] += resultSet.getInt("dead");
-                        }
-                    }
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("name", resultSet.getString("province"));
+                    jsonObject.put("eip", resultSet.getInt("eip"));
+                    jsonObject.put("esp", resultSet.getInt("esp"));
+                    jsonObject.put("tip", resultSet.getInt("tip"));
+                    jsonObject.put("tsp", resultSet.getInt("tsp"));
+                    jsonObject.put("cure", resultSet.getInt("cure"));
+                    jsonObject.put("dead", resultSet.getInt("dead"));
+                    jsonArray.add(jsonObject);
                 }
             } catch(SQLException e) {
                 e.printStackTrace();
-            }
-            for (int i = 0; i < provinceString.length; i++) {
-                if (provinceString[i].equals(province)) {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("name", provinceString[i]);
-                    jsonObject.put("eip", patient[i][0]);
-                    jsonObject.put("esp", patient[i][1]);
-                    jsonObject.put("tip", patient[i][2]);
-                    jsonObject.put("tsp", patient[i][3]);
-                    jsonObject.put("cure", patient[i][4]);
-                    jsonObject.put("dead", patient[i][5]);
-                    jsonArray.add(jsonObject);
-                }
             }
         }
         return jsonArray;
     }
 
     public JSONArray getDailyData(String endDate, String province) {
-        double ip = 0;
-        double cure = 0;
-        double dead = 0;
         JSONArray jsonArray = new JSONArray();
+        if (province.equals("全国")) {
+            JSONArray provinceArray = new JSONArray();
+            for (int i = 0; i < provinceString.length; i++) {
+                provinceArray.add(getProvinceDailyData(endDate, provinceString[i]));
+            }
+            Map<String, Integer> ipMap = new LinkedHashMap<>();
+            Map<String, Integer> spMap = new LinkedHashMap<>();
+            Map<String, Integer> cureMap = new LinkedHashMap<>();
+            Map<String, Integer> deadMap = new LinkedHashMap<>();
+            for (Object object: provinceArray) {
+                JSONArray jsonArray1 = (JSONArray) object;
+                for (Object o: jsonArray1) {
+                    JSONObject jsonObject = (JSONObject) o;
+                    String date = (String)jsonObject.get("date");
+                    int ip = (int) jsonObject.get("ip");
+                    int sp = (int) jsonObject.get("sp");
+                    int cure = (int) jsonObject.get("cure");
+                    int dead = (int) jsonObject.get("dead");
+                    double cureRate = Double.parseDouble((String)jsonObject.get("cureRate"));
+                    double deadRate = Double.parseDouble((String)jsonObject.get("deadRate"));
+                    if (ipMap.containsKey(date)) {
+                        int oldIp = ipMap.get(date);
+                        ipMap.put(date, oldIp + ip);
+                        int oldSp = spMap.get(date);
+                        spMap.put(date, oldSp + sp);
+                        int oldCure = cureMap.get(date);
+                        cureMap.put(date, oldCure + cure);
+                        int oldDead = deadMap.get(date);
+                        deadMap.put(date, oldDead + dead);
+                    } else {
+                        ipMap.put(date, ip);
+                        spMap.put(date, sp);
+                        cureMap.put(date, cure);
+                        deadMap.put(date, dead);
+                    }
+                }
+            }
+            for (String key : ipMap.keySet()) {
+                double ip = ipMap.get(key);
+                double sp = spMap.get(key);
+                double cure = cureMap.get(key);
+                double dead = deadMap.get(key);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("date", key);
+                jsonObject.put("ip", ip);
+                jsonObject.put("sp", sp);
+                jsonObject.put("cure", cure);
+                jsonObject.put("dead", dead);
+                double tip, tsp, tcure, tdead;
+                tip = tsp = tcure = tdead = 0;
+                try (Connection connection = DBConnect.getConnection()) {
+                    Statement statement = connection.createStatement();
+                    String sql = "SELECT * FROM DATA WHERE date = '" + key + "'";
+                    ResultSet resultSet = statement.executeQuery(sql);
+                    while (resultSet.next()) {
+                        tip += resultSet.getInt("tip");
+                        tsp += resultSet.getInt("tsp");
+                        tcure += resultSet.getInt("cure");
+                        tdead += resultSet.getInt("dead");
+                    }
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+                if (tip != 0 && cure != 0) {
+                    jsonObject.put("cureRate", String.format("%.3f", tcure / tip));
+                } else {
+                    jsonObject.put("cureRate", "0");
+                }
+                if (tip != 0 && dead != 0) {
+                    jsonObject.put("deadRate", String.format("%.3f", tdead / tip));
+                } else {
+                    jsonObject.put("deadRate", "0");
+                }
+                jsonArray.add(jsonObject);
+            }
+        } else {
+            jsonArray = getProvinceDailyData(endDate, province);
+        }
+        return jsonArray;
+    }
+
+    public JSONArray getProvinceDailyData(String endDate, String province) {
+        JSONArray jsonArray = new JSONArray();
+        int oldTip, oldTsp, oldCure, oldDead;
+        oldTip = oldTsp = oldCure = oldDead = 0;
         try (Connection connection = DBConnect.getConnection()) {
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "' AND province = '" + province + "'";
             ResultSet resultSet = statement.executeQuery(sql);
+            int flag = 0;
             while (resultSet.next()) {
-                ip += resultSet.getInt("tip");
-                cure += resultSet.getInt("cure");
-                dead += resultSet.getInt("dead");
+                double tip = resultSet.getInt("tip");
+                double tsp = resultSet.getInt("tsp");
+                double cure = resultSet.getInt("cure");
+                double dead = resultSet.getInt("dead");
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("date", resultSet.getString("date"));
-                jsonObject.put("ip", resultSet.getInt("tip"));
-                jsonObject.put("sp", resultSet.getInt("tsp"));
-                jsonObject.put("cure", cure);
-                jsonObject.put("dead", dead);
-                if (ip != 0 && cure != 0) {
-                    jsonObject.put("cureRate", String.format("%.3f", cure / ip));
+                jsonObject.put("ip", (int)tip - oldTip);
+                jsonObject.put("sp", (int)tsp - oldTsp);
+                jsonObject.put("cure", (int)cure - oldCure);
+                jsonObject.put("dead", (int)dead - oldDead);
+                if (tip != 0 && cure != 0) {
+                    jsonObject.put("cureRate", String.format("%.3f", cure / tip));
                 } else {
-                    jsonObject.put("cureRate", 0);
+                    jsonObject.put("cureRate", "0");
                 }
-                if (ip != 0 && dead != 0) {
-                    jsonObject.put("deadRate", String.format("%.3f", dead / ip));
+                if (tip != 0 && dead != 0) {
+                    jsonObject.put("deadRate", String.format("%.3f", dead / tip));
                 } else {
-                    jsonObject.put("deadRate", 0);
+                    jsonObject.put("deadRate", "0");
                 }
-                jsonArray.add(jsonObject);
+                oldTip = (int) tip;
+                oldTsp = (int) tsp;
+                oldCure = (int) cure;
+                oldDead = (int) dead;
+                if (flag != 0) {
+                    jsonArray.add(jsonObject);
+                } else {
+                    flag = 1;
+                }
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -131,14 +228,10 @@ public class DataDAO {
 
     /*public static void main(String[] args) {
         DataDAO dataDAO = new DataDAO();
-        System.out.println(dataDAO.getTotalData("2020-02-01", "全国"));
-        System.out.println(dataDAO.getDailyData("2020-02-01", "全国"));
-        JSONArray jsonArray = dataDAO.getDailyData("2020-02-01", "福建");
-        JSONArray dateArray = new JSONArray();
-        for (Object object: jsonArray) {
-            JSONObject jsonObject = (JSONObject) object;
-            dateArray.add(jsonObject.get("date"));
-        }
-        System.out.println(dateArray);
+        System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
+        System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
+        System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
+        System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
     }*/
+
 }

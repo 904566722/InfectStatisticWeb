@@ -13,7 +13,7 @@ public class DBConnect {
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:sqlite:G:\\workspace\\IDEA\\nfectStatisticWeb\\infectStatistic.db";
+        String url = "jdbc:sqlite:D:\\infectStatistic.db";
         return DriverManager.getConnection(url);
     }
 
