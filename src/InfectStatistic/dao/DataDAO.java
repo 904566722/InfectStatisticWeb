@@ -11,9 +11,9 @@ import java.sql.Statement;
 public class DataDAO {
 
     public JSONArray getTotalData(String endDate, String province) {
-        String[] provinceString = {"安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南",
-                "河北", "河南", "黑龙江", "湖北", "湖南", "吉林", "江苏", "江西", "辽宁", "内蒙古", "宁夏", "青海", "山东",
-                "山西", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南", "浙江", "台湾", "香港", "澳门"};
+        String[] provinceString = {"澳门", "香港", "台湾", "广东", "广西", "海南", "云南", "福建", "江西", "湖南", "贵州",
+                "浙江", "安徽", "上海", "江苏", "湖北", "西藏", "青海", "甘肃", "新疆", "陕西", "河南", "山西", "山东",
+                "河北", "天津", "北京", "宁夏", "内蒙古", "辽宁", "吉林", "黑龙江", "重庆", "四川", "全国"};
         String[] patientType = {"现存确诊", "现存疑似", "累计确诊", "累计疑似", "累计治愈", "累计死亡"};
         int[][] patient;
         patient = new int[provinceString.length][patientType.length];
@@ -22,6 +22,7 @@ public class DataDAO {
                 patient[i][j] = 0;
             }
         }
+        JSONArray jsonArray = new JSONArray();
 
         if (province.equals("全国")) {
             try (Connection connection = DBConnect.getConnection()) {
@@ -43,6 +44,17 @@ public class DataDAO {
             } catch(SQLException e) {
                 e.printStackTrace();
             }
+            for (int i = 0; i < provinceString.length; i++) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("name", provinceString[i]);
+                jsonObject.put("eip", patient[i][0]);
+                jsonObject.put("esp", patient[i][1]);
+                jsonObject.put("tip", patient[i][2]);
+                jsonObject.put("tsp", patient[i][3]);
+                jsonObject.put("cure", patient[i][4]);
+                jsonObject.put("dead", patient[i][5]);
+                jsonArray.add(jsonObject);
+            }
         } else {
             try (Connection connection = DBConnect.getConnection()) {
                 Statement statement = connection.createStatement();
@@ -63,19 +75,19 @@ public class DataDAO {
             } catch(SQLException e) {
                 e.printStackTrace();
             }
-        }
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < provinceString.length; i++) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", provinceString[i]);
-            jsonObject.put("eip", patient[i][0]);
-            jsonObject.put("esp", patient[i][1]);
-            jsonObject.put("tip", patient[i][2]);
-            jsonObject.put("tsp", patient[i][3]);
-            jsonObject.put("cure", patient[i][4]);
-            jsonObject.put("dead", patient[i][5]);
-            jsonArray.add(jsonObject);
+            for (int i = 0; i < provinceString.length; i++) {
+                if (provinceString[i].equals(province)) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("name", provinceString[i]);
+                    jsonObject.put("eip", patient[i][0]);
+                    jsonObject.put("esp", patient[i][1]);
+                    jsonObject.put("tip", patient[i][2]);
+                    jsonObject.put("tsp", patient[i][3]);
+                    jsonObject.put("cure", patient[i][4]);
+                    jsonObject.put("dead", patient[i][5]);
+                    jsonArray.add(jsonObject);
+                }
+            }
         }
         return jsonArray;
     }
@@ -117,9 +129,16 @@ public class DataDAO {
         return jsonArray;
     }
 
-//    public static void main(String[] args) {
-//        DataDAO dataDAO = new DataDAO();
-//        System.out.println(dataDAO.getTotalData("2020-02-01", "全国"));
-//        System.out.println(dataDAO.getDailyData("2020-02-01", "全国"));
-//    }
+    /*public static void main(String[] args) {
+        DataDAO dataDAO = new DataDAO();
+        System.out.println(dataDAO.getTotalData("2020-02-01", "全国"));
+        System.out.println(dataDAO.getDailyData("2020-02-01", "全国"));
+        JSONArray jsonArray = dataDAO.getDailyData("2020-02-01", "福建");
+        JSONArray dateArray = new JSONArray();
+        for (Object object: jsonArray) {
+            JSONObject jsonObject = (JSONObject) object;
+            dateArray.add(jsonObject.get("date"));
+        }
+        System.out.println(dateArray);
+    }*/
 }
