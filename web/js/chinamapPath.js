@@ -231,7 +231,7 @@ function drawMap(){
 * 根据后台传入的json数据渲染颜色
 *
  */
-function distinguishColor(json){
+function distinguishColorEip(json){
     //1. 获得数据--json格式
     //2. json转换为数组
     var data = string2Array(JSON.stringify(json));
@@ -260,7 +260,126 @@ function distinguishColor(json){
     var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
 
     //地图绘制
-    var R = Raphael("map", 600, 500);
+    var R = Raphael("map1", 600, 500);
+    paintMap(R);
+    var textAttr = {
+        "fill" : "#000",
+        "font-size" : "12px",
+        "course" : "pointer"
+    };
+
+    var i = 0;
+    for(var state in china){
+        china[state]['path'].color = Raphael.getColor(0.9);
+        (function (st, state) {
+
+            //获取当前图形的中心坐标
+            var xx = st.getBBox().x + (st.getBBox().width / 2);
+            var yy = st.getBBox().y + (st.getBBox().height / 2);
+
+            //修改部分地图文字偏移坐标
+            switch (china[state]['name']) {
+                case "江苏":
+                    xx += 5;
+                    yy -= 10;
+                    break;
+                case "河北":
+                    xx -= 10;
+                    yy += 20;
+                    break;
+                case "天津":
+                    xx += 10;
+                    yy += 10;
+                    break;
+                case "上海":
+                    xx += 10;
+                    break;
+                case "广东":
+                    yy -= 10;
+                    break;
+                case "澳门":
+                    yy += 10;
+                    break;
+                case "香港":
+                    xx += 20;
+                    yy += 5;
+                    break;
+                case "甘肃":
+                    xx -= 40;
+                    yy -= 30;
+                    break;
+                case "陕西":
+                    xx += 5;
+                    yy += 10;
+                    break;
+                case "内蒙古":
+                    xx -= 15;
+                    yy += 65;
+                    break;
+                default:
+            }
+            //写入文字
+            china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
+
+            var fillcolor = colors[arr[i]];//获取对应的颜色
+
+            st.attr({fill:fillcolor});//填充背景色
+
+            st[0].onmouseover = function () {
+                st.animate({fill: "#fdd", stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+            st[0].onmouseout = function () {
+                st.animate({fill: fillcolor, stroke: "#eee"}, 500);
+                china[state]['text'].toFront();
+                R.safari();
+            };
+
+            st[0].onclick = function () {
+                window.location.href = "jsp/province.jsp"
+            }
+
+        })(china[state]['path'], state);
+        i++;
+    }
+
+}
+
+/*
+* 根据后台传入的json数据渲染颜色
+*
+ */
+function distinguishColorTip(json){
+    //1. 获得数据--json格式
+    //2. json转换为数组
+    var data = string2Array(JSON.stringify(json));
+    var flag;
+    var arr = new Array();
+    for(var i=0; i<data.length; i++){
+        var d = data[i].tip;
+        if(d == 0){
+            rank = 0;
+        }else if(0<d && d<10){
+            rank = 1;
+        }else if(10<=d && d<100){
+            rank = 2;
+        }else if(100<=d && d<500){
+            rank = 3;
+        }else if(500<=d && d<1000){
+            rank = 4;
+        }else if(1000<=d && d<10000){
+            rank = 5;
+        }else if(10000<=d){
+            rank = 6;
+        }
+        arr.push(rank);
+    }
+    //定义颜色
+    var colors = ["#fff","#DCF4EE","#44CEF5","#4C8CAF","#177CB0","#2E4E7D","#00336F"];
+
+    //地图绘制
+    var R = Raphael("map2", 600, 500);
     paintMap(R);
     var textAttr = {
         "fill" : "#000",

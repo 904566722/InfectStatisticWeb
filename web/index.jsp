@@ -3,7 +3,7 @@
   User: DELL
   Date: 2020/3/11
   Time: 10:03
-  To change this template use File | Settings | File Templates.
+To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="net.sf.json.JSONArray" %>
 <%@ page import="net.sf.json.JSONObject" %>
@@ -13,6 +13,14 @@
 
 <%
     Object totalData = request.getAttribute("totalData");
+    JSONArray toatlDataJson = (JSONArray)totalData;
+    JSONObject wholeNationData = null;
+    for (Object object:toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        if (jsonObject.get("name") == "全国"){
+            wholeNationData = jsonObject;
+        }
+    }
     JSONArray lineChartData = (JSONArray) request.getAttribute("dailyData");
     JSONArray dateArray = new JSONArray();
     for (Object object : lineChartData){
@@ -71,17 +79,32 @@
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=lineChartData%>);
+        console.log(<%=wholeNationData%>);
         $(document).ready(function(){
-            //绘制地图
-            //  drawMap();
-            distinguishColor(<%=totalData%>);
-             //绘制趋势图1
+            var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
+            //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
+            distinguishColorEip(<%=totalData%>);
+            distinguishColorTip(<%=totalData%>);
+            $("#map2").hide();
+
+            //点击切换地图
+            $("#drawMap1").click(function () {
+                $("#map2").hide();
+                $("#map1").show();
+            });
+
+            //绘制地图--累计确诊
+            $("#drawMap2").click(function () {
+                $("#map1").hide();
+                $("#map2").show();
+            });
+
+             //展示趋势图1
             drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
-            //隐藏图2和图3
+            //隐藏趋势图2和趋势图3
             $("#lineChart3").hide();
             $("#lineChart2").hide();
-
+            //点击切换图表
             $("#showLineChart1").click(function(){
                 drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
             });
@@ -93,7 +116,9 @@
             $("#showLineChart3").click(function(){
                 drawLineChart3(<%=dateArray%>, <%=cureRateArray%>, <%=deadRateArray%>);
             });
+
         });
+
     </script>
 </head>
 <body>
@@ -128,7 +153,7 @@
                 </div>
                 <div id="wdData">
                     <div class="ip">
-                        <strong>49666</strong><br>
+                        <strong><%=wholeNationData.getInt("eip")%></strong><br>
                         <span>现存确诊</span>
                         <div class="compareToday">
                             <span style="font-size: 8px">较昨日：</span>
@@ -136,7 +161,7 @@
                         </div>
                     </div>
                     <div class="sp">
-                        <strong>3434</strong><br>
+                        <strong><%=wholeNationData.getInt("esp")%></strong><br>
                         <span>现存疑似</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
@@ -144,7 +169,7 @@
                         </div>
                     </div>
                     <div class="cure">
-                        <strong>25007</strong><br>
+                        <strong><%=wholeNationData.getInt("cure")%></strong><br>
                         <span>累计治愈</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
@@ -152,7 +177,7 @@
                         </div>
                     </div>
                     <div class="dead">
-                        <strong>2596</strong><br>
+                        <strong><%=wholeNationData.getInt("dead")%></strong><br>
                         <span>累计死亡</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
@@ -173,12 +198,13 @@
                 </div>
 
                 <!-- 地图渲染 -->
-                <div id="map"></div>
+                <div id="map1"></div>
+                <div id="map2"></div>
 
                 <!-- 切换地图按钮 -->
                 <ul class="changeMap">
-                    <li><a id="drawMap1" href="javascript:drawMap1()">现存确诊</a></li>
-                    <li><a id="drawMap2" href="javascript:drawMap2()">累计确诊</a></li>
+                    <li><a id="drawMap1" href="javascript:void(0)">现存确诊</a></li>
+                    <li><a id="drawMap2" href="javascript:void(0)">累计确诊</a></li>
                 </ul>
 
             </div>
