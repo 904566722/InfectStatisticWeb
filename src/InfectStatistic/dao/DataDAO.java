@@ -2,6 +2,7 @@ package InfectStatistic.dao;
 
 import InfectStatistic.util.DBConnect;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,10 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DataDAO {
     public String[] provinceString = {"澳门", "香港", "台湾", "广东", "广西", "海南", "云南", "福建", "江西", "湖南", "贵州",
@@ -98,6 +96,37 @@ public class DataDAO {
             }
         }
         return jsonArray;
+    }
+
+    public String jsonArraySort(JSONArray jsonArr, String sortKey) {
+        JSONArray sortedJsonArray = new JSONArray();
+        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        for (int i = 0; i < jsonArr.size(); i++) {
+            jsonValues.add(JSONObject.fromObject(jsonArr.getJSONObject(i)));
+        }
+        Collections.sort(jsonValues, new Comparator<JSONObject>() {
+            private  final String KEY_NAME = sortKey;
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                int valA = 0;
+                int valB = 0;
+                try {
+                    valA = Integer.parseInt(a.getString(KEY_NAME));
+                    valB = Integer.parseInt(b.getString(KEY_NAME));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (valA < valB){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        for (int i = 0; i < jsonArr.size(); i++) {
+            sortedJsonArray.add(jsonValues.get(i));
+        }
+        return sortedJsonArray.toString();
     }
 
     public JSONArray getDailyData(String endDate, String province) {
@@ -378,6 +407,7 @@ public class DataDAO {
         System.out.println(dataDAO.getCompareData("2020-03-01", "全国"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "湖北"));
         System.out.println("changeDateFormat:" + dataDAO.changeDateFormat("2020-3-2"));
+        System.out.println(dataDAO.jsonArraySort(dataDAO.getTotalData("2020-03-01", "全国"), "eip"));
     }*/
 
 }
