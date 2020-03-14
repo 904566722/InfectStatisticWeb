@@ -224,10 +224,49 @@ ul.nav a:hover{
 
 }
 
+#dateinput{
+    width: 82px;
+}
+
+#formDateSelect{
+    width: 233px;
+    position: relative;
+    top: -35px;
+}
+
 .midPartTitle strong{
     position: relative;
     top: -18px;
     left: 40px;
+}
+
+#btnSelect{
+    border-radius: 5px;
+    font-size: 12px
+}
+
+#dateSelect{
+    position: relative;
+    left: 72%;
+    width: 181px;
+    text-align: right;
+}
+
+#btnSelect{
+
+}
+
+#dateSelect>ul{
+    width: 33px;
+    position: relative;
+    left: 154px;
+    top: -14px;
+}
+
+btnSelect{
+    position: relative;
+    left: 40px;
+    top: -32px;
 }
 
 #map{

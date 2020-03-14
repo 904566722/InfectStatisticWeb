@@ -75,15 +75,15 @@ a,a:hover,a:active,a:visited{text-decoration:none;color:#333;}
 	background-color: green;
 }
 
-#dateinput{
-	width: 110px;
-	height: 20px;
-	line-height: 50px;
-	display: block;
-	margin: 10px auto;
-	font-size: 16px;
-	text-align: center;
-	position: relative;
-	right: -412px;
-	border-radius: 16px;
-}
+/*#dateinput{*/
+/*	width: 110px;*/
+/*	height: 20px;*/
+/*	line-height: 50px;*/
+/*	display: block;*/
+/*	margin: 10px auto;*/
+/*	font-size: 16px;*/
+/*	text-align: center;*/
+/*	border-radius: 16px;*/
+/*	position: relative;*/
+/*	top: 32px;*/
+/*}*/

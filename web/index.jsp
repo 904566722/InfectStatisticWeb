@@ -14,6 +14,9 @@ To change this template use File | Settings | File Templates.
 <%
     String path=request.getContextPath();
     Object totalData = request.getAttribute("totalData");
+    Object compareData = request.getAttribute("compareData");
+    JSONArray compareJson = (JSONArray)compareData;
+    JSONObject compare = (JSONObject) compareJson.get(0);
     JSONArray toatlDataJson = (JSONArray)totalData;
     JSONObject wholeNationData = null;
     for (Object object:toatlDataJson){
@@ -69,6 +72,9 @@ To change this template use File | Settings | File Templates.
         JSONObject jsonObject = (JSONObject) object;
         deadRateArray.add(jsonObject.get("deadRate"));
     }
+
+    //获得日期
+    String endDate = (String)request.getAttribute("endDate");
 %>
 
 <html>
@@ -86,7 +92,6 @@ To change this template use File | Settings | File Templates.
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=lineChartData%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
@@ -130,7 +135,6 @@ To change this template use File | Settings | File Templates.
                 //初始化日期插件
                 $('#dateinput').date();
             });
-
         });
     </script>
 </head>
@@ -158,7 +162,7 @@ To change this template use File | Settings | File Templates.
             <div id="wholeData">
                 <div id ="wdPs">
                     <p class="ps1">
-                        <span style="color: #7F7F7F">截至2020-02-04 23:00全国数据统计</span>
+                        <span style="color: #7F7F7F">截至<%=endDate%>全国数据统计</span>
                     </p>
                     <p class="ps2">
                         <span style="color: #AAAAAA">数据说明</span>
@@ -170,7 +174,7 @@ To change this template use File | Settings | File Templates.
                         <span>现存确诊</span>
                         <div class="compareToday">
                             <span style="font-size: 8px">较昨日：</span>
-                            <span style="font-size: 8px;color: #F74C31">-1335</span>
+                            <span style="font-size: 8px;color: #F74C31"><%=compare.getInt("eip")%></span>
                         </div>
                     </div>
                     <div class="sp">
@@ -178,7 +182,7 @@ To change this template use File | Settings | File Templates.
                         <span>现存疑似</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
-                            <span style="font-size: 6px;color: #F78207">-1335</span>
+                            <span style="font-size: 6px;color: #F78207"><%=compare.getInt("esp")%></span>
                         </div>
                     </div>
                     <div class="cure">
@@ -186,7 +190,7 @@ To change this template use File | Settings | File Templates.
                         <span>累计治愈</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
-                            <span style="font-size: 6px;color: #28B7A3">-1335</span>
+                            <span style="font-size: 6px;color: #28B7A3"><%=compare.getInt("cure")%></span>
                         </div>
                     </div>
                     <div class="dead">
@@ -194,7 +198,7 @@ To change this template use File | Settings | File Templates.
                         <span>累计死亡</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
-                            <span style="font-size: 6px;color: #5D7092">-1335</span>
+                            <span style="font-size: 6px;color: #5D7092"><%=compare.getInt("dead")%></span>
                         </div>
                     </div>
                 </div>
@@ -210,10 +214,14 @@ To change this template use File | Settings | File Templates.
                     <strong>疫情地图</strong>
                 </div>
 
-
+                <%-- 日期选择--%>
                 <div id="dateSelect">
-                    <input type="text" id="dateinput" />
-                    <div style="width: 200%"><div id="datePlugin"></div></div>
+                    <form action="DataServlet" id="formDateSelect">
+                        <input name="endDate" type="text" id="dateinput" value=<%=endDate%>>
+                        <input type="submit" id="btnSelect" value="当天">
+                    </form>
+                    <div id="datePlugin"></div>
+
                 </div>
 
                 <!-- 地图渲染 -->

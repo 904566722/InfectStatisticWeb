@@ -151,3 +151,14 @@ body{
     height: 400px;
     margin: 100px auto;
 }
+
+#dateinput{
+    width: 82px;
+    height: 20px;
+}
+
+#dateSelect{
+    position: absolute;
+    left: 56px;
+    top: 126px;
+}
