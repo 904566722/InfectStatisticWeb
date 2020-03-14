@@ -41,10 +41,14 @@ public class DataServlet extends HttpServlet {
         JSONArray totalData = dataDAO.getTotalData(endDate, "全国");
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
         JSONArray compareData = dataDAO.getCompareData(endDate, "全国");
+        String latestDate = dataDAO.getLatestDate();
+        String oldestDate = dataDAO.getOldestDate();
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("compareData", compareData);
         request.setAttribute("endDate", endDate);
+        request.setAttribute("latestDate", latestDate);
+        request.setAttribute("oldestDate", oldestDate);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
@@ -64,11 +68,15 @@ public class DataServlet extends HttpServlet {
         JSONArray totalData = dataDAO.getTotalData(endDate, province);
         JSONArray dailyData = dataDAO.getDailyData(endDate, province);
         JSONArray compareData = dataDAO.getCompareData(endDate, province);
+        String latestDate = dataDAO.getLatestDate();
+        String oldestDate = dataDAO.getOldestDate();
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("compareData", compareData);
         request.setAttribute("endDate", endDate);
         request.setAttribute("province", province);
+        request.setAttribute("latestDate", latestDate);
+        request.setAttribute("oldestDate", oldestDate);
         request.getRequestDispatcher("./jsp/province.jsp").forward(request, response);
     }
 }

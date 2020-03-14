@@ -28,7 +28,6 @@ public class DataDAO {
                 patient[i][j] = 0;
             }
         }
-
         JSONArray jsonArray = new JSONArray();
         if (province.equals("全国")) {
             int eip, esp, tip, tsp, cure, dead;
@@ -243,6 +242,34 @@ public class DataDAO {
         return latestDate;
     }
 
+    public String getOldestDate() {
+        String oldestDate = "2020-12-31";
+        try (Connection connection = DBConnect.getConnection()) {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM DATA WHERE province = '" + "湖北" + "'";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                if (oldestDate.compareTo(resultSet.getString("date")) > 0) {
+                    oldestDate = resultSet.getString("date");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date todayDate = sdf.parse(oldestDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(todayDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            Date yesterdayDate = calendar.getTime();
+            return sdf.format(yesterdayDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return oldestDate;
+    }
+
     public JSONArray getCompareData(String endDate, String province) {
         int eip, esp, tip, tsp, cure, dead;
         eip = esp = tip = tsp = cure = dead = 0;
@@ -344,11 +371,12 @@ public class DataDAO {
         System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
         System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
         System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
-        System.out.println(dataDAO.getLatestDate());
-        System.out.println(dataDAO.getYesterday("2020-03-01"));
+        System.out.println("latestDate:" + dataDAO.getLatestDate());
+        System.out.println("oldestDate:" + dataDAO.getOldestDate());
+        System.out.println("yesterday:" + dataDAO.getYesterday("2020-03-01"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "全国"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "湖北"));
-        System.out.println(dataDAO.changeDateFormat("2020-3-2"));
+        System.out.println("changeDateFormat:" + dataDAO.changeDateFormat("2020-3-2"));
     }*/
 
 }
