@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -117,8 +121,6 @@ public class DataDAO {
                     int sp = (int) jsonObject.get("sp");
                     int cure = (int) jsonObject.get("cure");
                     int dead = (int) jsonObject.get("dead");
-                    double cureRate = Double.parseDouble((String)jsonObject.get("cureRate"));
-                    double deadRate = Double.parseDouble((String)jsonObject.get("deadRate"));
                     if (ipMap.containsKey(date)) {
                         int oldIp = ipMap.get(date);
                         ipMap.put(date, oldIp + ip);
@@ -182,8 +184,8 @@ public class DataDAO {
 
     public JSONArray getProvinceDailyData(String endDate, String province) {
         JSONArray jsonArray = new JSONArray();
-        int oldTip, oldTsp, oldCure, oldDead;
-        oldTip = oldTsp = oldCure = oldDead = 0;
+        int oldTip, oldTsp;
+        oldTip = oldTsp = 0;
         try (Connection connection = DBConnect.getConnection()) {
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM DATA WHERE date <= '" + endDate + "' AND province = '" + province + "'";
@@ -198,8 +200,8 @@ public class DataDAO {
                 jsonObject.put("date", resultSet.getString("date"));
                 jsonObject.put("ip", (int)tip - oldTip);
                 jsonObject.put("sp", (int)tsp - oldTsp);
-                jsonObject.put("cure", (int)cure - oldCure);
-                jsonObject.put("dead", (int)dead - oldDead);
+                jsonObject.put("cure", (int)cure);
+                jsonObject.put("dead", (int)dead);
                 if (tip != 0 && cure != 0) {
                     jsonObject.put("cureRate", String.format("%.3f", cure / tip));
                 } else {
@@ -212,8 +214,6 @@ public class DataDAO {
                 }
                 oldTip = (int) tip;
                 oldTsp = (int) tsp;
-                oldCure = (int) cure;
-                oldDead = (int) dead;
                 if (flag != 0) {
                     jsonArray.add(jsonObject);
                 } else {
@@ -225,13 +225,118 @@ public class DataDAO {
         }
         return jsonArray;
     }
-//
-//    public static void main(String[] args) {
-//        DataDAO dataDAO = new DataDAO();
-//        System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
-//        System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
-//        System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
-//        System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
-//    }
+
+    public String getLatestDate() {
+        String latestDate = "2020-01-01";
+        try (Connection connection = DBConnect.getConnection()) {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM DATA WHERE province = '" + "湖北" + "'";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                if (latestDate.compareTo(resultSet.getString("date")) < 0) {
+                    latestDate = resultSet.getString("date");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return latestDate;
+    }
+
+    public JSONArray getCompareData(String endDate, String province) {
+        int eip, esp, tip, tsp, cure, dead;
+        eip = esp = tip = tsp = cure = dead = 0;
+        String yesterday = getYesterday(endDate);
+        JSONArray jsonArray = new JSONArray();
+        if (province.equals("全国")) {
+            try (Connection connection = DBConnect.getConnection()) {
+                Statement statement = connection.createStatement();
+                String sql = "SELECT * FROM DATA WHERE date = '" + endDate + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    eip += resultSet.getInt("eip");
+                    esp += resultSet.getInt("esp");
+                    tip += resultSet.getInt("tip");
+                    tsp += resultSet.getInt("tsp");
+                    cure += resultSet.getInt("cure");
+                    dead += resultSet.getInt("dead");
+                }
+                String sql2 = "SELECT * FROM DATA WHERE date = '" + yesterday + "'";
+                ResultSet resultSet2 = statement.executeQuery(sql2);
+                while (resultSet2.next()) {
+                    eip -= resultSet2.getInt("eip");
+                    esp -= resultSet2.getInt("esp");
+                    tip -= resultSet2.getInt("tip");
+                    tsp -= resultSet2.getInt("tsp");
+                    cure -= resultSet2.getInt("cure");
+                    dead -= resultSet2.getInt("dead");
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        } else {
+            try (Connection connection = DBConnect.getConnection()) {
+                Statement statement = connection.createStatement();
+                String sql = "SELECT * FROM DATA WHERE date = '" + endDate + "' AND province = '" + province + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    eip += resultSet.getInt("eip");
+                    esp += resultSet.getInt("esp");
+                    tip += resultSet.getInt("tip");
+                    tsp += resultSet.getInt("tsp");
+                    cure += resultSet.getInt("cure");
+                    dead += resultSet.getInt("dead");
+                }
+                String sql2 = "SELECT * FROM DATA WHERE date = '" + yesterday + "' AND province = '" + province + "'";
+                ResultSet resultSet2 = statement.executeQuery(sql2);
+                while (resultSet2.next()) {
+                    eip -= resultSet2.getInt("eip");
+                    esp -= resultSet2.getInt("esp");
+                    tip -= resultSet2.getInt("tip");
+                    tsp -= resultSet2.getInt("tsp");
+                    cure -= resultSet2.getInt("cure");
+                    dead -= resultSet2.getInt("dead");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("eip", eip);
+        jsonObject.put("esp", esp);
+        jsonObject.put("tip", tip);
+        jsonObject.put("tsp", tsp);
+        jsonObject.put("cure", cure);
+        jsonObject.put("dead", dead);
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    public String getYesterday(String endDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date todayDate = sdf.parse(endDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(todayDate);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            Date yesterdayDate = calendar.getTime();
+            return sdf.format(yesterdayDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*public static void main(String[] args) {
+        DataDAO dataDAO = new DataDAO();
+        System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
+        System.out.println(dataDAO.getDailyData("2020-03-12", "全国"));
+        System.out.println(dataDAO.getTotalData("2020-03-12", "湖北"));
+        System.out.println(dataDAO.getDailyData("2020-03-12", "湖北"));
+        System.out.println(dataDAO.getLatestDate());
+        System.out.println(dataDAO.getYesterday("2020-03-01"));
+        System.out.println(dataDAO.getCompareData("2020-03-01", "全国"));
+        System.out.println(dataDAO.getCompareData("2020-03-01", "湖北"));
+    }*/
 
 }

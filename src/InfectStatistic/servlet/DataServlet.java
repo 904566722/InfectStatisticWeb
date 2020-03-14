@@ -35,13 +35,15 @@ public class DataServlet extends HttpServlet {
         String endDate = request.getParameter("endDate");
         if (endDate != null) {
         } else {
-            endDate = "2020-03-12";
+            endDate = dataDAO.getLatestDate();
         }
         JSONArray totalData = dataDAO.getTotalData(endDate, "全国");
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
+        JSONArray compareData = dataDAO.getCompareData(endDate, "全国");
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
-        request.setAttribute("flag", 1);
+        request.setAttribute("compareData", compareData);
+        request.setAttribute("endDate", endDate);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
@@ -51,7 +53,7 @@ public class DataServlet extends HttpServlet {
         String province = request.getParameter("province");
         if (endDate != null) {
         } else {
-            endDate = "2020-03-12";
+            endDate = dataDAO.getLatestDate();
         }
         if (province != null) {
         } else {
@@ -59,9 +61,12 @@ public class DataServlet extends HttpServlet {
         }
         JSONArray totalData = dataDAO.getTotalData(endDate, province);
         JSONArray dailyData = dataDAO.getDailyData(endDate, province);
+        JSONArray compareData = dataDAO.getCompareData(endDate, province);
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
+        request.setAttribute("compareData", compareData);
+        request.setAttribute("endDate", endDate);
         request.setAttribute("province", province);
-        request.getRequestDispatcher("jsp/province.jsp").forward(request, response);
+        request.getRequestDispatcher("./jsp/province.jsp").forward(request, response);
     }
 }
