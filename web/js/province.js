@@ -88,13 +88,13 @@ function drawChart2(date, cureRate, deadRate){
             {
                 name: '治愈率',
                 type: 'line',
-                stack: '总量',
+                stack: '总量1',
                 data: cureRate,
             },
             {
                 name: '死亡率',
                 type: 'line',
-                stack: '总量',
+                stack: '总量2',
                 data: deadRate,
             },
         ]

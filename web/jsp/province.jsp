@@ -17,6 +17,35 @@
     JSONArray compareJson = (JSONArray)compareData;
     JSONObject compare = (JSONObject) compareJson.get(0);
 
+    String strEip = "";
+    String strEsp = "";
+    String strDead = "";
+    String strCure = "";
+    int intEip = compare.getInt("eip");
+    int intEsp = compare.getInt("esp");
+    int intDead = compare.getInt("dead");
+    int intCure = compare.getInt("cure");
+    if (intEip > 0){
+        strEip = "+" + intEip;
+    }else{
+        strEip = "" + intEip;
+    }
+    if (intEsp > 0){
+        strEsp = "+" + intEsp;
+    }else{
+        strEsp = "" + intEsp;
+    }
+    if (intDead > 0){
+        strDead = "+" + intDead;
+    }else{
+        strDead = "" + intDead;
+    }
+    if (intCure > 0){
+        strCure = "+" + intCure;
+    }else{
+        strCure = "" + intCure;
+    }
+
     //获得省份名称
     String provinceName = (String)request.getAttribute("province");
     JSONArray toatlDataJson = (JSONArray)totalData;
@@ -84,6 +113,7 @@
                 $('#dateinput').date();
             });
             $("#paraAction").hide();
+            $("#paraProvince").hide();
         });
 
     </script>
@@ -108,6 +138,7 @@
             <div id="dateSelect" style="position: absolute;left: 56px;top: 126px;">
                 <form action="DataServlet?action=getProvinceData" id="formDateSelect">
                     <input id="paraAction" type="text" name="action" value="getProvinceData">
+                    <input id="paraProvince" type="text" name="province" value=<%=provinceName%>>
                     <input name="endDate" type="text" id="dateinput" value=<%=endDate%>>
                     <input type="submit" id="btnSelect" value="查看">
                 </form>
@@ -121,7 +152,7 @@
                     <strong style="color: #F74C31;font-size: 26px;"><%=eip%></strong><br>
                     <div class="compareToday">
                         <span style="font-size: 8px">较昨日：</span>
-                        <span style="font-size: 8px;color: #F74C31"><%=compare.getInt("eip")%></span>
+                        <span style="font-size: 8px;color: #F74C31"><%=strEip%></span>
                     </div>
                 </div>
                 <div class="sp">
@@ -129,7 +160,7 @@
                     <strong style="color: #F78207;font-size: 26px;"><%=esp%></strong><br>
                     <div class="compareToday">
                         <span style="font-size: 6px">较昨日：</span>
-                        <span style="font-size: 6px;color: #F78207"><%=compare.getInt("esp")%></span>
+                        <span style="font-size: 6px;color: #F78207"><%=strEsp%></span>
                     </div>
                 </div>
                 <div class="cure">
@@ -137,7 +168,7 @@
                     <strong style="color: #28B7A3;font-size: 26px;"><%=cure%></strong><br>
                     <div class="compareToday">
                         <span style="font-size: 6px">较昨日：</span>
-                        <span style="font-size: 6px;color: #28B7A3"><%=compare.getInt("cure")%></span>
+                        <span style="font-size: 6px;color: #28B7A3"><%=strCure%></span>
                     </div>
                 </div>
                 <div class="dead">
@@ -145,7 +176,7 @@
                     <strong style="color: #5D7092;font-size: 26px;"><%=dead%></strong><br>
                     <div class="compareToday">
                         <span style="font-size: 6px">较昨日：</span>
-                        <span style="font-size: 6px;color: #5D7092"><%=compare.getInt("dead")%></span>
+                        <span style="font-size: 6px;color: #5D7092"><%=strDead%></span>
                     </div>
                 </div>
             </div>

@@ -18,12 +18,74 @@ To change this template use File | Settings | File Templates.
     JSONArray compareJson = (JSONArray)compareData;
     JSONObject compare = (JSONObject) compareJson.get(0);
     JSONArray toatlDataJson = (JSONArray)totalData;
+
+    JSONArray nameTotalArray = new JSONArray();
+    for (Object object : toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        nameTotalArray.add(jsonObject.get("name"));
+    }
+
+    //现存确诊数据
+    JSONArray eipTotalArray = new JSONArray();
+    for (Object object : toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        eipTotalArray.add(jsonObject.get("eip"));
+    }
+
+    //累计确诊
+    JSONArray tipTotalArray = new JSONArray();
+    for (Object object : toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        tipTotalArray.add(jsonObject.get("tip"));
+    }
+
+    JSONArray cureTotalArray = new JSONArray();
+    for (Object object : toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        cureTotalArray.add(jsonObject.get("cure"));
+    }
+
+    JSONArray deadTotalArray = new JSONArray();
+    for (Object object : toatlDataJson){
+        JSONObject jsonObject = (JSONObject) object;
+        deadTotalArray.add(jsonObject.get("dead"));
+    }
+
     JSONObject wholeNationData = null;
     for (Object object:toatlDataJson){
         JSONObject jsonObject = (JSONObject) object;
         if (jsonObject.get("name") == "全国"){
             wholeNationData = jsonObject;
         }
+    }
+
+    String strEip = "";
+    String strEsp = "";
+    String strDead = "";
+    String strCure = "";
+    int intEip = compare.getInt("eip");
+    int intEsp = compare.getInt("esp");
+    int intDead = compare.getInt("dead");
+    int intCure = compare.getInt("cure");
+    if (intEip > 0){
+        strEip = "+" + intEip;
+    }else{
+        strEip = "" + intEip;
+    }
+    if (intEsp > 0){
+        strEsp = "+" + intEsp;
+    }else{
+        strEsp = "" + intEsp;
+    }
+    if (intDead > 0){
+        strDead = "+" + intDead;
+    }else{
+        strDead = "" + intDead;
+    }
+    if (intCure > 0){
+        strCure = "+" + intCure;
+    }else{
+        strCure = "" + intCure;
     }
 
     //折线图绘制需要用到的数据
@@ -92,9 +154,11 @@ To change this template use File | Settings | File Templates.
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=totalData%>);
-
-        console.log(<%=lineChartData%>);
+        console.log(<%=totalData%>)
+        console.log(<%=nameTotalArray%>)
+        <%--console.log(<%=eipTotalArray%>)--%>
+        <%--console.log(<%=deadTotalArray%>)--%>
+        console.log(<%=tipTotalArray%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
@@ -194,7 +258,7 @@ To change this template use File | Settings | File Templates.
                         <span>现存确诊</span>
                         <div class="compareToday">
                             <span style="font-size: 8px">较昨日：</span>
-                            <span style="font-size: 8px;color: #F74C31"><%=compare.getInt("eip")%></span>
+                            <span style="font-size: 8px;color: #F74C31"><%=strEip%></span>
                         </div>
                     </div>
                     <div class="sp">
@@ -202,7 +266,7 @@ To change this template use File | Settings | File Templates.
                         <span>现存疑似</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
-                            <span style="font-size: 6px;color: #F78207"><%=compare.getInt("esp")%></span>
+                            <span style="font-size: 6px;color: #F78207"><%=strEsp%></span>
                         </div>
                     </div>
                     <div class="cure">
@@ -218,7 +282,7 @@ To change this template use File | Settings | File Templates.
                         <span>累计死亡</span>
                         <div class="compareToday">
                             <span style="font-size: 6px">较昨日：</span>
-                            <span style="font-size: 6px;color: #5D7092"><%=compare.getInt("dead")%></span>
+                            <span style="font-size: 6px;color: #5D7092"><%=strDead%></span>
                         </div>
                     </div>
                 </div>
