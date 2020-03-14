@@ -144,6 +144,7 @@ To change this template use File | Settings | File Templates.
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="<%=path%>/css/index.css">
     <link rel="stylesheet" type="text/css" href="<%=path%>/css/dateSelect.css">
+    <link rel="shortcut icon" href="">
     <script type="text/javascript" src="<%=path%>/js/raphael.js"></script>
     <script type="text/javascript" src="<%=path%>/js/chinamapPath.js"></script>
     <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
@@ -151,7 +152,7 @@ To change this template use File | Settings | File Templates.
     <script type="text/javascript" src="<%=path%>/js/dateSelect.js"></script>
     <script type="text/javascript" src="<%=path%>/js/iscrollDate.js"></script>
 
-    <title>index</title>
+    <title>疫情数据统计</title>
 
     <script type="text/javascript">
         $(document).ready(function(){

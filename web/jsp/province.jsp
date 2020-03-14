@@ -95,7 +95,7 @@
 %>
 <html>
 <head>
-    <title>省份详细数据</title>
+    <title><%=provinceName%></title>
     <link rel="stylesheet" type="text/css" href="<%=path%>/css/province.css">
     <link rel="stylesheet" type="text/css" href="<%=path%>/css/dateSelect.css">
     <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
@@ -103,7 +103,6 @@
     <script type="text/javascript" src="<%=path%>/js/province.js"></script>
     <script type="text/javascript" src="<%=path%>/js/dateSelect.js"></script>
     <script type="text/javascript" src="<%=path%>/js/iscrollDate.js"></script>
-
     <script type="text/javascript">
         $(document).ready(function(){
             drawChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
