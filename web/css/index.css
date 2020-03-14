@@ -366,7 +366,7 @@ ul.nav a:hover{
 }
 
 #table th{
-    background:#b5cfd2 url('cell-blue.jpg');
+    background:#b5cfd2;
     border-width: 1px;
     padding: 8px;
     border-style: solid;
@@ -375,7 +375,7 @@ ul.nav a:hover{
 }
 
 #table td{
-    background:#dcddc0 url('cell-grey.jpg');
+    background:#dcddc0;
     border-width: 1px;
     padding: 8px;
     border-style: solid;
@@ -395,6 +395,10 @@ ul.nav a:hover{
     top: -2040px;
 }
 
+#rightPart p{
+    margin-top: 15px;
+}
+
 #provinceInfo{
     position: relative;
     top: -500px;
@@ -409,7 +413,7 @@ ul.nav a:hover{
 
 #infoProvinceName{
     width: 100%;
-    height: 20%;
+    height: 13%;
     background: #82d9f7;
     text-align: center;
     box-shadow: 5px 5px 5px rgba(0,0,0,.2);

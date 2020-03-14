@@ -75,15 +75,18 @@ To change this template use File | Settings | File Templates.
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="<%=path%>/css/index.css">
+    <link rel="stylesheet" type="text/css" href="<%=path%>/css/dateSelect.css">
     <script type="text/javascript" src="<%=path%>/js/raphael.js"></script>
     <script type="text/javascript" src="<%=path%>/js/chinamapPath.js"></script>
     <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
     <script type="text/javascript" src="<%=path%>/js/test.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/dateSelect.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/iscrollDate.js"></script>
 
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=totalData%>);
+        console.log(<%=lineChartData%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
@@ -122,6 +125,12 @@ To change this template use File | Settings | File Templates.
             });
 
             $("#provinceInfo").hide();
+
+            $(function(){
+                //初始化日期插件
+                $('#dateinput').date();
+            });
+
         });
     </script>
 </head>
@@ -199,6 +208,12 @@ To change this template use File | Settings | File Templates.
                 <div class="midPartTitle">
                     <div class="titleIcon"></div>
                     <strong>疫情地图</strong>
+                </div>
+
+
+                <div id="dateSelect">
+                    <input type="text" id="dateinput" />
+                    <div style="width: 200%"><div id="datePlugin"></div></div>
                 </div>
 
                 <!-- 地图渲染 -->
@@ -279,9 +294,10 @@ To change this template use File | Settings | File Templates.
 
 
         <div id="rightPart">
+
             <div id="provinceInfo">
                 <div id="infoProvinceName">
-                    <p></p>
+                    <p style="font-weight: bold; margin-top:3px"></p>
                 </div>
                 <div id="infoProvinceIp">
                     <div class="infoLeft">

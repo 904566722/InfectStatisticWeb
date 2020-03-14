@@ -1,0 +1,89 @@
+#dateSelect span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;vertical-align:baseline;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+h1,h2,h3,h4,h5,h6,h7{font-size:16px;font-weight:normal;}
+b{font-weight:normal;}
+ol,ul,li{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+input,textarea{outline:0;resize:none;font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;}
+i,em,b,cite{font-style:normal;font-weight:normal;}
+.clearfix:after{content:'.';height:0;display:block;clear:both;visibility:hidden;}
+.clearfix{*zoom:1;}
+a,a:hover,a:active,a:visited{text-decoration:none;color:#333;}
+.html-unscrollable{overflow:hidden;height:100%}
+.fl{float:left;display:inline;}
+.fr{float:right;display:inline;}
+
+#datescroll div{float:left;margin-top:15px;height:150px;}
+#datescroll_datetime div{float: left;margin-left: 10%;padding-right: 22px;}
+#yearwrapper{position: absolute;left:15px;top:0;bottom: 60px;width:33.333%;}
+#monthwrapper{position: absolute;left: 33.333%;top:0;bottom: 60px;width:33.33%;}
+#daywrapper{position: absolute;left:63%;top:0;bottom: 60px;width:33.33%;}
+#Hourwrapper{position: absolute;left: 0;top:195px;bottom: 68px;width:80%;}
+#Minutewrapper{position: absolute;left: 26%;top:195px;bottom: 68px;width:80%;}
+#Secondwrapper{position: absolute;left: 50%;top:195px;bottom: 68px;width:80%;}
+#Hourwrapper ul li{color: #898989;font-size: 12px;}
+#Minutewrapper ul li{color: #898989;font-size: 12px;}
+#Secondwrapper ul li{color: #898989;font-size: 12px;}
+#yearwrapper ul li{color: #333;font-size: 16px;height:50px;line-height:50px;}
+#monthwrapper ul li{color: #333;font-size: 16px;height:50px;line-height:50px;}
+#monthwrapper ul li.crently,#yearwrapper ul li.crently,#daywrapper ul li.crently{color:#f80;}
+#daywrapper ul li{color: #333;font-size: 16px;height:50px;line-height:50px;}
+
+
+#markhour{position:relative; margin-left: 62px;top:-2px;}
+#markminut{position:relative; margin-left: 58px;top:-2px;}
+#marksecond{position:relative; margin-left: 68px;top:-2px;}
+#dateheader{width: 100%;height:50px;background: #79C12F;text-align: center;color: #fff;line-height: 50px;font-size: 20px;}
+#setcancle ul{text-align: center; margin:1px auto;font-size: 20px;}
+#setcancle ul li{background:#f8f8f8;list-style-type: none;font-family:'microsoft yahei';font-size:16px;width:50%;float:left;height:50px;line-height:50px;border-top:1px solid #e6e6e6;position:relative;}
+#setcancle ul li:last-child:before{content:"";width:1px;height:100%;position:absolute;left:0;top:0;display:block;background:#e6e6e6;}
+#datePlugin{overflow:hidden;position:fixed;left:0;top:0;z-index:99999;background:rgba(0,0,0,0.5);width:100%;height:100%;display:none;}
+#datePlugin.show{display:block;}
+#datePage{font-size: 22px;
+	border-radius: 3px;
+	width: 222px;
+	height: 170px;
+	background: #fff;
+	z-index: 9999999;
+	padding-bottom: 50px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 99999;
+	margin-left: 0;
+	margin-top: -135px;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	-webkit-box-shadow: 0 0 12px rgba(0,0,0,.175);
+	box-shadow: 0 0 12px rgba(0,0,0,.175);}
+#datetitle{width: 100%;height:50px;background: #79C12F;text-align: center;color: #fff;line-height: 50px;font-size: 20px;font-family:'microsoft yahei';display:none;}
+#datetitle h1{font-weight:normal;}
+#datemark{font-size: 18px;left:5%;width: 90%;height:48px;border:1px solid #eee;position:absolute;top:65px;border-radius:3px;-webkit-box-shadow:0 0 12px rgba(255,136,0,.3);box-shadow:0 0 12px rgba(255,136,0,.3)}
+#datemark a{position:relative;width:20%;margin:0 6.666%;height:46px;float:left;}
+#timemark{font-size: 18px;left:5%;width:90%;height: 20px;position:absolute;top:242px;background:#e6e6e6;border:1px solid #e6e6e6;display:none;}
+#datescroll{width:90%;padding:10px 0;margin:0 auto;height:150px;text-align:center;line-height: 40px;}
+#datescroll_datetime{display: none;background:#F8F8F8;width:94%; margin:10px 3%;margin-top: 10px;border: 1px solid #E0E0E0;border-radius: 4px;height: 120px;text-align: center;line-height: 40px;}
+#yearwrapper ul,#monthwrapper ul,#daywrapper ul{}
+#Hourwrapper ul,#Minutewrapper ul,#Secondwrapper ul{width:40%;}
+#dateFooter{width:100%;background:#fff;height:50px;}
+
+#left{
+	width: 500px;
+	height: 1000px;
+	background-color: green;
+}
+
+#dateinput{
+	width: 110px;
+	height: 20px;
+	line-height: 50px;
+	display: block;
+	margin: 10px auto;
+	font-size: 16px;
+	text-align: center;
+	position: relative;
+	right: -412px;
+	border-radius: 16px;
+}
