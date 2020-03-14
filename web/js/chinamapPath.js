@@ -184,93 +184,13 @@ function paintMap(R) {
     };
 }
 
-function drawMap(){
-    var R = Raphael("map", 600, 500);
-
-
-    //绘制地图
-    paintMap(R);
-
-    //城市名
-    var textAttr = {
-        "fill": "#000",
-        "font-size": "12px",
-        "cursor": "pointer" //光标
-    };
-
-
-
-    //对应省份加上身份名称，以及鼠标划向每个省份区块的动画
-    for (var state in china) {
-        china[state]['path'].color = Raphael.getColor(0.9);
-
-        (function (st, state) {
-
-            //获取当前图形的中心坐标
-            var xx = st.getBBox().x + (st.getBBox().width / 2);
-            var yy = st.getBBox().y + (st.getBBox().height / 2);
-
-            //修正偏移量
-            switch (china[state]['name']) {
-                case '澳门':
-                    yy += 10;
-                case '香港':
-                    xx += 20;
-                case '广东':
-                    xx -= 10;
-                    yy -= 70;
-                case '内蒙古':
-                    yy +=  50;
-                case '天津':
-                    xx += 30;
-                    yy += 10;
-                case '河北':
-                    xx -= 15;
-                    yy += 10;
-                case '北京':
-                    yy -= 10;
-
-            }
-
-
-            //写入文字
-            china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
-
-            st[0].onmouseover = function () {//鼠标滑向
-                st.animate({fill: st.color, stroke: "#eee"}, 500);
-                china[state]['text'].toFront();
-                R.safari();
-            };
-
-            st[0].onmouseout = function () {//鼠标离开
-                st.animate({fill: "#97d6f5", stroke: "#eee"}, 500);
-                china[state]['text'].toFront();
-                R.safari();
-            };
-
-
-            st[0].onclick = function () {
-                window.location.href = "jsp/province.jsp"
-            }
-
-            // //点击事件
-            // st[0].onclick = function(){
-            //     alert("hello,你点击了我");
-            // }
-
-        })(china[state]['path'], state);
-
-    }
-}
-
-
 function displayProvinceInfo(info) {
     $("#infoProvinceName p").text(info.name);
     $("#infoIp p").text(info.eip);
     $("#infoSp p").text(info.esp);
     $("#infoCure p").text(info.cure);
     $("#infoDead p").text(info.dead);
-    $("#provinceInfo").slideDown("slow");
+    $("#provinceInfo").slideDown("fast");
 }
 
 /*
@@ -311,16 +231,13 @@ function distinguishColorEip(json, path){
     var textAttr = {
         "fill" : "#000",
         "font-size" : "12px",
-        "course" : "pointer"
+        "font-weight" : "bold",
+        // "cursor" : "pointer"
     };
 
     var i = 0;
     var j = 0;
     for(var state in china){
-
-        // if(state == 'aomen'){
-        //     console.log(data[indexOfData['aomen']].name);
-        // }
 
         china[state]['path'].color = Raphael.getColor(0.9);
         (function (st, state) {
@@ -382,15 +299,16 @@ function distinguishColorEip(json, path){
                 st.animate({fill: "#fdd", stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
-                // $("#provinceInfo").show();
                 displayProvinceInfo(data[indexOfData[state]]);
+                st[0].style.cursor = "pointer";
+
             };
             st[0].onmouseout = function () {
                 st.animate({fill: fillcolor, stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
                 $("#provinceInfo").hide();
-                // displayProvinceInfo(data[indexOfData[state]]);
+                st[0].style.cursor = "pointer";
             };
 
             st[0].onclick = function () {
@@ -407,7 +325,7 @@ function distinguishColorEip(json, path){
 * 根据后台传入的json数据渲染颜色
 *
  */
-function distinguishColorTip(json){
+function distinguishColorTip(json, path){
     //1. 获得数据--json格式
     //2. json转换为数组
     var data = string2Array(JSON.stringify(json));
@@ -441,7 +359,7 @@ function distinguishColorTip(json){
     var textAttr = {
         "fill" : "#000",
         "font-size" : "12px",
-        "course" : "pointer"
+        "font-weight" : "bold",
     };
 
     var i = 0;
@@ -506,12 +424,14 @@ function distinguishColorTip(json){
                 china[state]['text'].toFront();
                 R.safari();
                 displayProvinceInfo(data[indexOfData[state]]);
+                st[0].style.cursor = "pointer";
             };
             st[0].onmouseout = function () {
                 st.animate({fill: fillcolor, stroke: "#eee"}, 500);
                 china[state]['text'].toFront();
                 R.safari();
                 $("#provinceInfo").hide();
+                st[0].style.cursor = "pointer";
             };
 
             st[0].onclick = function () {
@@ -532,29 +452,26 @@ function string2Array(string) {
 
 //绘制趋势图1
 function drawLineChart1(date, ip, sp){
-
     // $("#showLineChart1 a").css("background-color","#288ADE");
     $("#showLineChart1").css("background-color","#288ADE");
     $("#showLineChart2").css("background-color","#F59A23");
     $("#showLineChart3").css("background-color","#F59A23");
-
     $("#lineChart1").show();
     $("#lineChart3").hide();
     $("#lineChart2").hide();
-
     // step2. 基于准备好的dom，初始化echarts实例
     var lineChart1 = echarts.init(document.getElementById('lineChart1'));
 
     // step3. 指定图表的配置项和数据
     var option = {
         title: {
-            text: '新增确诊/新增疑似'
+            text: '新增确诊'
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['新增确诊', '新增疑似']
+            data: ['新增确诊']
         },
         grid: {
             left: '3%',
@@ -583,15 +500,8 @@ function drawLineChart1(date, ip, sp){
                 stack: '总量',
                 data: ip,
             },
-            {
-                name: '新增疑似',
-                type: 'line',
-                stack: '总量',
-                data: sp,
-            },
         ]
     };
-
     // step4. 使用刚指定的配置项和数据显示图表。
     lineChart1.setOption(option);
 }
@@ -601,16 +511,11 @@ function drawLineChart2(date, cure, dead){
     $("#showLineChart1").css("background-color","#F59A23");
     $("#showLineChart2").css("background-color","#288ADE");
     $("#showLineChart3").css("background-color","#F59A23");
-
     $("#lineChart1").hide();
     $("#lineChart3").hide();
     $("#lineChart2").show();
-
     // step2. 基于准备好的dom，初始化echarts实例
     var lineChart2 = echarts.init(document.getElementById('lineChart2'));
-
-
-
     // step3. 指定图表的配置项和数据
     var option = {
         title: {
@@ -637,7 +542,6 @@ function drawLineChart2(date, cure, dead){
             type: 'category',
             boundaryGap: false,
             data: date,
-
         },
         yAxis: {
             type: 'value'
@@ -657,14 +561,12 @@ function drawLineChart2(date, cure, dead){
             },
         ]
     };
-
     // step4. 使用刚指定的配置项和数据显示图表。
     lineChart2.setOption(option);
 }
 
 //绘制趋势图3
 function drawLineChart3(date, cureRate, deadRate){
-
     $("#showLineChart1").css("background-color","#F59A23");
     $("#showLineChart2").css("background-color","#F59A23");
     $("#showLineChart3").css("background-color","#288ADE");
@@ -672,12 +574,8 @@ function drawLineChart3(date, cureRate, deadRate){
     $("#lineChart1").hide();
     $("#lineChart2").hide();
     $("#lineChart3").show();
-
     // step2. 基于准备好的dom，初始化echarts实例
     var lineChart3 = echarts.init(document.getElementById('lineChart3'));
-
-
-
     // step3. 指定图表的配置项和数据
     var option = {
         title: {
@@ -724,26 +622,8 @@ function drawLineChart3(date, cureRate, deadRate){
             },
         ]
     };
-
     // step4. 使用刚指定的配置项和数据显示图表。
     lineChart3.setOption(option);
-}
-
-
-/*
-* 显示疫情地图1-现存
-* */
-function drawMap1() {
-    //
-    alert("点击现存");
-}
-
-/*
-* 显示疫情地图1-累计
-* */
-function drawMap2() {
-
-    alert("点击累计");
 }
 
 function scrollToMap() {

@@ -109,7 +109,7 @@
                 <form action="DataServlet?action=getProvinceData" id="formDateSelect">
                     <input id="paraAction" type="text" name="action" value="getProvinceData">
                     <input name="endDate" type="text" id="dateinput" value=<%=endDate%>>
-                    <input type="submit" id="btnSelect" value="当天">
+                    <input type="submit" id="btnSelect" value="查看">
                 </form>
                 <div id="datePlugin"></div>
 

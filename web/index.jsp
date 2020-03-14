@@ -92,24 +92,33 @@ To change this template use File | Settings | File Templates.
     <title>index</title>
 
     <script type="text/javascript">
+        console.log(<%=totalData%>);
+
+        console.log(<%=lineChartData%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
             distinguishColorEip(<%=totalData%>, "<%=path%>");
-            distinguishColorTip(<%=totalData%>);
+            distinguishColorTip(<%=totalData%>, "<%=path%>");
             $("#map2").hide();
 
             //点击切换地图
             $("#drawMap1").click(function () {
                 $("#map2").hide();
                 $("#map1").show();
+                $("#drawMap1").css("background","#288ADE");
+                $("#drawMap2").css("background","#0EA6D8");
             });
 
             //绘制地图--累计确诊
             $("#drawMap2").click(function () {
                 $("#map1").hide();
                 $("#map2").show();
+                $("#drawMap1").css("background","#0EA6D8");
+                $("#drawMap2").css("background","#288ADE");
             });
+
+            $("#drawMap1").css("background","#288ADE");
 
             //展示趋势图1
             drawLineChart1(<%=dateArray%>, <%=ipArray%>, <%=spArray%>);
@@ -135,6 +144,17 @@ To change this template use File | Settings | File Templates.
                 //初始化日期插件
                 $('#dateinput').date();
             });
+
+            $("#dataPs").hide();
+
+            $("#dataSource").mouseover(function () {
+                $("#dataPs").fadeIn("slow");
+            });
+
+            $("#dataSource").mouseout(function () {
+                $("#dataPs").fadeOut(5000);
+            });
+
         });
     </script>
 </head>
@@ -165,7 +185,7 @@ To change this template use File | Settings | File Templates.
                         <span style="color: #7F7F7F">截至<%=endDate%>全国数据统计</span>
                     </p>
                     <p class="ps2">
-                        <span style="color: #AAAAAA">数据说明</span>
+                        <span id="dataSource" style="color: #AAAAAA">数据说明</span>
                     </p>
                 </div>
                 <div id="wdData">
@@ -218,7 +238,7 @@ To change this template use File | Settings | File Templates.
                 <div id="dateSelect">
                     <form action="DataServlet" id="formDateSelect">
                         <input name="endDate" type="text" id="dateinput" value=<%=endDate%>>
-                        <input type="submit" id="btnSelect" value="当天">
+                        <input type="submit" id="btnSelect" value="查看">
                     </form>
                     <div id="datePlugin"></div>
 
@@ -233,6 +253,27 @@ To change this template use File | Settings | File Templates.
                     <li><a id="drawMap1" href="javascript:void(0)">现存确诊</a></li>
                     <li><a id="drawMap2" href="javascript:void(0)">累计确诊</a></li>
                 </ul>
+
+                <div id="levelInfo">
+                    <div class="levelColor">
+                        <div id="levelColor1"></div>
+                        <div id="levelColor2"></div>
+                        <div id="levelColor3"></div>
+                        <div id="levelColor4"></div>
+                        <div id="levelColor5"></div>
+                        <div id="levelColor6"></div>
+                        <div id="levelColor7"></div>
+                    </div>
+                    <div class="rightNum" style="text-align: left;position: relative;left: 17px;top: -123px;">
+                        <strong class="num">≥10000</strong><br>
+                        <strong class="num">1000-9999</strong><br>
+                        <strong class="num">500-999</strong><br>
+                        <strong class="num">100-499</strong><br>
+                        <strong class="num">10-99</strong><br>
+                        <strong class="num">1-9</strong><br>
+                        <strong class="num">0</strong>
+                    </div>
+                </div>
 
             </div>
 
@@ -339,6 +380,11 @@ To change this template use File | Settings | File Templates.
                         <p></p>
                     </div>
                 </div>
+            </div>
+
+            <div id="dataPs">
+                <p>2020-01-14~2020-03-13的数据来源:</p><a target="_blank" href="https://github.com/BlankerL/DXY-COVID-19-Data/blob/master/csv/DXYArea.csv">https://github.com/BlankerL/DXY-COVID-19-Data/blob/master/csv/DXYArea.csv</a>
+                <p>2020-03-3之后的数据来源:</p><a target="_blank" href="https://news.qq.com/zt2020/page/feiyan.htm#/">https://news.qq.com/zt2020/page/feiyan.htm#/</a>
             </div>
         </div>
 

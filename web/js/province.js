@@ -6,13 +6,13 @@ function drawChart1(date, ip, sp){
     // step3. 指定图表的配置项和数据
     var option = {
         title: {
-            text: '新增确诊/新增疑似'
+            text: '新增确诊'
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['新增确诊', '新增疑似']
+            data: ['新增确诊']
         },
         grid: {
             left: '3%',
@@ -40,12 +40,6 @@ function drawChart1(date, ip, sp){
                 type: 'line',
                 stack: '总量',
                 data: ip,
-            },
-            {
-                name: '新增疑似',
-                type: 'line',
-                stack: '总量',
-                data: sp,
             },
         ]
     };

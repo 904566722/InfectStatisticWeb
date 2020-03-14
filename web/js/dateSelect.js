@@ -264,24 +264,30 @@ function datehide(){
             $("#daywrapper").css("position","absolute");
             $("#daywrapper").css("bottom","200px");
         }
+
+        var date = new Date();
+        var year = date.getFullYear();
+        var mon = date.getMonth() + 1;
+        var day = date.getDate() + 1;
+        var isThisMonth = 0;
         //创建 --年-- 列表
         function createYEAR_UL(){
             var str="<li>&nbsp;</li>";
-            for(var i=opts.beginyear; i<=opts.endyear;i++){
+            for(var i=2020; i<=year;i++){
                 str+='<li>'+i+'年</li>'
             }
-            return str+"<li>&nbsp;</li>";;
+            return str+"<li>&nbsp;</li>";
         }
         //创建 --月-- 列表
         function createMONTH_UL(){
             var str="<li>&nbsp;</li>";
-            for(var i=opts.beginmonth;i<=opts.endmonth;i++){
+            for(var i=opts.beginmonth;i<=mon && i<=opts.endmonth;i++){
                 if(i<10){
                     i="0"+i
                 }
                 str+='<li>'+i+'月</li>'
             }
-            return str+"<li>&nbsp;</li>";;
+            return str+"<li>&nbsp;</li>";
         }
         //创建 --日-- 列表
         function createDAY_UL(){
@@ -289,36 +295,11 @@ function datehide(){
             var str="<li>&nbsp;</li>";
                 for(var i=opts.beginday;i<=opts.endday;i++){
                     if(i<10){
-                        i="0"+i
+                        i = "0" + i
                     }
                     str+='<li>'+i+'日</li>'
             }
-            return str+"<li>&nbsp;</li>";;                     
-        }
-        //创建 --时-- 列表
-        function createHOURS_UL(){
-            var str="<li>&nbsp;</li>";
-            for(var i=opts.beginhour;i<=opts.endhour;i++){
-                str+='<li>'+i+'时</li>'
-            }
-            return str+"<li>&nbsp;</li>";;
-        }
-        //创建 --分-- 列表
-        function createMINUTE_UL(){
-            var str="<li>&nbsp;</li>";
-            for(var i=opts.beginminute;i<=opts.endminute;i++){
-                if(i<10){
-                    i="0"+i
-                }
-                str+='<li>'+i+'分</li>'
-            }
-            return str+"<li>&nbsp;</li>";;
-        }
-        //创建 --分-- 列表
-        function createSECOND_UL(){
-            var str="<li>&nbsp;</li>";
-            str+="<li>上午</li><li>下午</li>"
-            return str+"<li>&nbsp;</li>";;
+            return str+"<li>&nbsp;</li>";
         }
     }
 })(jQuery);  

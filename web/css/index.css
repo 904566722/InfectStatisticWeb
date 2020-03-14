@@ -241,7 +241,6 @@ ul.nav a:hover{
 }
 
 #btnSelect{
-    border-radius: 5px;
     font-size: 12px
 }
 
@@ -302,6 +301,83 @@ btnSelect{
     text-decoration: none;
     color:white;
     font-weight: bold;
+}
+
+#levelInfo{
+    width: 127px;
+    height: 210px;
+    position: absolute;
+    top: 682px;
+    left: 51px;
+}
+
+#levelColor{
+    width: 16px;
+    background: #F59A23;
+}
+
+#levelColor1{
+    width: 14px;
+    height: 14px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background: #00336F;
+}
+
+#levelColor2{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #2E4E7D;
+}
+
+#levelColor3{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #177CB0;
+}
+
+#levelColor4{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #4C8CAF;
+}
+
+#levelColor5{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #44CEF5;
+}
+
+#levelColor6{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #DCF4EE;
+}
+
+#levelColor7{
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #FFFFFF;
+}
+
+#rightNum{
+
+}
+
+.num{
+    font-size: 13px;
 }
 
 /*鼠标移入效果*/
@@ -514,6 +590,23 @@ btnSelect{
 #infoDead{
     position: relative;
     top: -16px;
+}
+
+#dataPs p{
+    font-size: 10px;
+}
+
+#dataPs a{
+    font-size: 14px;
+    color: #0EA6D8;
+}
+
+#dataPs{
+    position: absolute;
+    width: 331px;
+    height: 200px;
+    top: -903px;
+    left: 14px;
 }
 
 
