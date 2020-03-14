@@ -2,6 +2,7 @@ package InfectStatistic.dao;
 
 import InfectStatistic.util.DBConnect;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,10 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DataDAO {
     public String[] provinceString = {"澳门", "香港", "台湾", "广东", "广西", "海南", "云南", "福建", "江西", "湖南", "贵州",
@@ -61,9 +59,9 @@ public class DataDAO {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("name", provinceString[i]);
                 jsonObject.put("eip", patient[i][0]);
-                jsonObject.put("esp", patient[i][1]);
+                jsonObject.put("esp", 0);
                 jsonObject.put("tip", patient[i][2]);
-                jsonObject.put("tsp", patient[i][3]);
+                jsonObject.put("tsp", 0);
                 jsonObject.put("cure", patient[i][4]);
                 jsonObject.put("dead", patient[i][5]);
                 jsonArray.add(jsonObject);
@@ -71,9 +69,9 @@ public class DataDAO {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("name", "全国");
             jsonObject.put("eip", eip);
-            jsonObject.put("esp", esp);
+            jsonObject.put("esp", 0);
             jsonObject.put("tip", tip);
-            jsonObject.put("tsp", tsp);
+            jsonObject.put("tsp", 0);
             jsonObject.put("cure", cure);
             jsonObject.put("dead", dead);
             jsonArray.add(jsonObject);
@@ -86,9 +84,9 @@ public class DataDAO {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("name", resultSet.getString("province"));
                     jsonObject.put("eip", resultSet.getInt("eip"));
-                    jsonObject.put("esp", resultSet.getInt("esp"));
+                    jsonObject.put("esp", 0);
                     jsonObject.put("tip", resultSet.getInt("tip"));
-                    jsonObject.put("tsp", resultSet.getInt("tsp"));
+                    jsonObject.put("tsp", 0);
                     jsonObject.put("cure", resultSet.getInt("cure"));
                     jsonObject.put("dead", resultSet.getInt("dead"));
                     jsonArray.add(jsonObject);
@@ -98,6 +96,37 @@ public class DataDAO {
             }
         }
         return jsonArray;
+    }
+
+    public String jsonArraySort(JSONArray jsonArr, String sortKey) {
+        JSONArray sortedJsonArray = new JSONArray();
+        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        for (int i = 0; i < jsonArr.size(); i++) {
+            jsonValues.add(JSONObject.fromObject(jsonArr.getJSONObject(i)));
+        }
+        Collections.sort(jsonValues, new Comparator<JSONObject>() {
+            private  final String KEY_NAME = sortKey;
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                int valA = 0;
+                int valB = 0;
+                try {
+                    valA = Integer.parseInt(a.getString(KEY_NAME));
+                    valB = Integer.parseInt(b.getString(KEY_NAME));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (valA < valB){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        for (int i = 0; i < jsonArr.size(); i++) {
+            sortedJsonArray.add(jsonValues.get(i));
+        }
+        return sortedJsonArray.toString();
     }
 
     public JSONArray getDailyData(String endDate, String province) {
@@ -145,7 +174,7 @@ public class DataDAO {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("date", key);
                 jsonObject.put("ip", ip);
-                jsonObject.put("sp", sp);
+                jsonObject.put("sp", 0);
                 jsonObject.put("cure", cure);
                 jsonObject.put("dead", dead);
                 double tip, tsp, tcure, tdead;
@@ -198,7 +227,7 @@ public class DataDAO {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("date", resultSet.getString("date"));
                 jsonObject.put("ip", (int)tip - oldTip);
-                jsonObject.put("sp", (int)tsp - oldTsp);
+                jsonObject.put("sp", 0);
                 jsonObject.put("cure", (int)cure);
                 jsonObject.put("dead", (int)dead);
                 if (tip != 0 && cure != 0) {
@@ -330,9 +359,9 @@ public class DataDAO {
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("eip", eip);
-        jsonObject.put("esp", esp);
+        jsonObject.put("esp", 0);
         jsonObject.put("tip", tip);
-        jsonObject.put("tsp", tsp);
+        jsonObject.put("tsp", 0);
         jsonObject.put("cure", cure);
         jsonObject.put("dead", dead);
         jsonArray.add(jsonObject);
@@ -365,6 +394,7 @@ public class DataDAO {
         return endDate;
     }
 
+    //测试用主函数
     /*public static void main(String[] args) {
         DataDAO dataDAO = new DataDAO();
         System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
@@ -377,6 +407,7 @@ public class DataDAO {
         System.out.println(dataDAO.getCompareData("2020-03-01", "全国"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "湖北"));
         System.out.println("changeDateFormat:" + dataDAO.changeDateFormat("2020-3-2"));
+        System.out.println(dataDAO.jsonArraySort(dataDAO.getTotalData("2020-03-01", "全国"), "eip"));
     }*/
 
 }

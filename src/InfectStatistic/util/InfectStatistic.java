@@ -14,15 +14,16 @@ public class InfectStatistic {
             "贵州省", "浙江省", "安徽省", "上海市", "江苏省", "湖北省", "西藏省", "青海省", "甘肃省", "新疆省", "陕西省", "河南省", "山西省",
             "山东省", "河北省", "天津市", "北京市", "宁夏回族自治区", "内蒙古自治区", "辽宁省", "吉林省", "黑龙江省", "重庆市", "四川省"};
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         InfectStatistic infectStatistic = new InfectStatistic();
-        String[] logDateString = {"2020-03-13", "2020-03-14"};
+        //logDataString为{“前一天”，“导入的当天”}格式，例如要导入3月15日的数据，应当写成如下形式：
+        String[] logDateString = {"2020-03-14", "2020-03-15"};
         for (int i = 1; i < logDateString.length; i++) {
             InfectStatistic.DataHandle dataHandle = infectStatistic.new DataHandle();
             dataHandle.dataProcess(infectStatistic.readLog(logDateString[i], "D:\\all_data\\"), logDateString[i]);
             dataHandle.addOtherData(logDateString[i], logDateString[i-1]);
         }
-    }*/
+    }
 
     public ArrayList readLog(String logDate, String logPath) {
         ArrayList<String> stringList = new ArrayList<>();

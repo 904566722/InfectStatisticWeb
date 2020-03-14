@@ -33,7 +33,13 @@ public class DataServlet extends HttpServlet {
     private void getTotalData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataDAO dataDAO = new DataDAO();
         String endDate = request.getParameter("endDate");
-        if (endDate != null) {
+        String latestDate = dataDAO.getLatestDate();
+        String oldestDate = dataDAO.getOldestDate();
+        if (endDate != null && endDate.compareTo(latestDate) > 0) {
+            endDate = latestDate;
+        } else if (endDate != null && endDate.compareTo(oldestDate) < 0) {
+            endDate = oldestDate;
+        } else if (endDate != null) {
             endDate = dataDAO.changeDateFormat(endDate);
         } else {
             endDate = dataDAO.getLatestDate();
@@ -41,11 +47,11 @@ public class DataServlet extends HttpServlet {
         JSONArray totalData = dataDAO.getTotalData(endDate, "全国");
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
         JSONArray compareData = dataDAO.getCompareData(endDate, "全国");
-        String latestDate = dataDAO.getLatestDate();
-        String oldestDate = dataDAO.getOldestDate();
+        String sortedData = dataDAO.jsonArraySort(totalData, "eip");
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("compareData", compareData);
+        request.setAttribute("sortedData", sortedData);
         request.setAttribute("endDate", endDate);
         request.setAttribute("latestDate", latestDate);
         request.setAttribute("oldestDate", oldestDate);
@@ -56,7 +62,13 @@ public class DataServlet extends HttpServlet {
         DataDAO dataDAO = new DataDAO();
         String endDate = request.getParameter("endDate");
         String province = request.getParameter("province");
-        if (endDate != null) {
+        String latestDate = dataDAO.getLatestDate();
+        String oldestDate = dataDAO.getOldestDate();
+        if (endDate != null && endDate.compareTo(latestDate) > 0) {
+            endDate = latestDate;
+        } else if (endDate != null && endDate.compareTo(oldestDate) < 0) {
+            endDate = oldestDate;
+        } else if (endDate != null) {
             endDate = dataDAO.changeDateFormat(endDate);
         } else {
             endDate = dataDAO.getLatestDate();
@@ -68,8 +80,6 @@ public class DataServlet extends HttpServlet {
         JSONArray totalData = dataDAO.getTotalData(endDate, province);
         JSONArray dailyData = dataDAO.getDailyData(endDate, province);
         JSONArray compareData = dataDAO.getCompareData(endDate, province);
-        String latestDate = dataDAO.getLatestDate();
-        String oldestDate = dataDAO.getOldestDate();
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("compareData", compareData);
