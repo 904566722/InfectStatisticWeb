@@ -327,6 +327,17 @@ public class DataDAO {
         return null;
     }
 
+    public String changeDateFormat(String endDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date todayDate = sdf.parse(endDate);
+            return sdf.format(todayDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return endDate;
+    }
+
     /*public static void main(String[] args) {
         DataDAO dataDAO = new DataDAO();
         System.out.println(dataDAO.getTotalData("2020-03-12", "全国"));
@@ -337,6 +348,7 @@ public class DataDAO {
         System.out.println(dataDAO.getYesterday("2020-03-01"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "全国"));
         System.out.println(dataDAO.getCompareData("2020-03-01", "湖北"));
+        System.out.println(dataDAO.changeDateFormat("2020-3-2"));
     }*/
 
 }

@@ -34,6 +34,7 @@ public class DataServlet extends HttpServlet {
         DataDAO dataDAO = new DataDAO();
         String endDate = request.getParameter("endDate");
         if (endDate != null) {
+            endDate = dataDAO.changeDateFormat(endDate);
         } else {
             endDate = dataDAO.getLatestDate();
         }
@@ -52,6 +53,7 @@ public class DataServlet extends HttpServlet {
         String endDate = request.getParameter("endDate");
         String province = request.getParameter("province");
         if (endDate != null) {
+            endDate = dataDAO.changeDateFormat(endDate);
         } else {
             endDate = dataDAO.getLatestDate();
         }
