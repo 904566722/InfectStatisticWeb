@@ -35,7 +35,7 @@ public class DataServlet extends HttpServlet {
         String endDate = request.getParameter("endDate");
         if (endDate != null) {
         } else {
-            endDate = "2020-02-02";
+            endDate = "2020-03-12";
         }
         JSONArray totalData = dataDAO.getTotalData(endDate, "全国");
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
@@ -51,7 +51,7 @@ public class DataServlet extends HttpServlet {
         String province = request.getParameter("province");
         if (endDate != null) {
         } else {
-            endDate = "2020-02-02";
+            endDate = "2020-03-12";
         }
         if (province != null) {
         } else {
