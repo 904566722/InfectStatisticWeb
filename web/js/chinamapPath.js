@@ -480,10 +480,15 @@ function drawLineChart1(date, ip, sp){
             containLabel: true
         },
         toolbox: {
+            show: true,
             feature: {
-                saveAsImage: {}
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
+        calculable: true,
         xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -493,6 +498,14 @@ function drawLineChart1(date, ip, sp){
         yAxis: {
             type: 'value'
         },
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0],
+                start: 1,
+                end: 100
+            },
+        ],
         series: [
             {
                 name: '新增确诊',
@@ -534,8 +547,12 @@ function drawLineChart2(date, cure, dead){
             containLabel: true
         },
         toolbox: {
+            show: true,
             feature: {
-                saveAsImage: {}
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
         xAxis: {
@@ -546,6 +563,14 @@ function drawLineChart2(date, cure, dead){
         yAxis: {
             type: 'value'
         },
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0],
+                start: 1,
+                end: 100
+            },
+        ],
         series: [
             {
                 name: '累计治愈',
@@ -594,8 +619,12 @@ function drawLineChart3(date, cureRate, deadRate){
             containLabel: true
         },
         toolbox: {
+            show: true,
             feature: {
-                saveAsImage: {}
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
         xAxis: {
@@ -607,6 +636,14 @@ function drawLineChart3(date, cureRate, deadRate){
         yAxis: {
             type: 'value'
         },
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0],
+                start: 1,
+                end: 100
+            },
+        ],
         series: [
             {
                 name: '治愈率',

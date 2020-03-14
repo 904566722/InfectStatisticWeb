@@ -98,7 +98,7 @@ public class DataDAO {
         return jsonArray;
     }
 
-    public String jsonArraySort(JSONArray jsonArr, String sortKey) {
+    public JSONArray jsonArraySort(JSONArray jsonArr, String sortKey) {
         JSONArray sortedJsonArray = new JSONArray();
         List<JSONObject> jsonValues = new ArrayList<JSONObject>();
         for (int i = 0; i < jsonArr.size(); i++) {
@@ -126,7 +126,7 @@ public class DataDAO {
         for (int i = 0; i < jsonArr.size(); i++) {
             sortedJsonArray.add(jsonValues.get(i));
         }
-        return sortedJsonArray.toString();
+        return sortedJsonArray;
     }
 
     public JSONArray getDailyData(String endDate, String province) {

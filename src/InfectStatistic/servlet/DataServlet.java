@@ -47,7 +47,7 @@ public class DataServlet extends HttpServlet {
         JSONArray totalData = dataDAO.getTotalData(endDate, "全国");
         JSONArray dailyData = dataDAO.getDailyData(endDate, "全国");
         JSONArray compareData = dataDAO.getCompareData(endDate, "全国");
-        String sortedData = dataDAO.jsonArraySort(totalData, "eip");
+        JSONArray sortedData = dataDAO.jsonArraySort(totalData, "eip");
         request.setAttribute("totalData", totalData);
         request.setAttribute("dailyData", dailyData);
         request.setAttribute("compareData", compareData);
