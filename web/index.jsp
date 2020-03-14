@@ -154,11 +154,6 @@ To change this template use File | Settings | File Templates.
     <title>index</title>
 
     <script type="text/javascript">
-        console.log(<%=totalData%>)
-        console.log(<%=nameTotalArray%>)
-        <%--console.log(<%=eipTotalArray%>)--%>
-        <%--console.log(<%=deadTotalArray%>)--%>
-        console.log(<%=tipTotalArray%>);
         $(document).ready(function(){
             var mapType = "tip";    //绘制地图类型：1.现存确诊eip 2.累计确诊tip
             //展示地图 | 1.绘制两个地图 2.隐藏地图2（为点击事件准备）
