@@ -11,15 +11,15 @@ import java.util.regex.Pattern;
 
 public class CountData {
     private String[] provinceString = {"全国", "安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南",
-            "河北", "河南", "黑龙江", "湖北", "湖南", "吉林", "江苏", "江西", "辽宁", "内蒙古", "宁夏", "青海", "山东",
-            "山西", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南", "浙江", "台湾", "香港", "澳门"};
+        "河北", "河南", "黑龙江", "湖北", "湖南", "吉林", "江苏", "江西", "辽宁", "内蒙古", "宁夏", "青海", "山东",
+        "山西", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南", "浙江", "台湾", "香港", "澳门"};
     private String[] patientType = {"现存确诊", "现存疑似", "累计确诊", "累计疑似", "累计治愈", "累计死亡"};
 
     public static void main(String[] args) {
         CountData countData = new CountData();
         String[] logDateString = {"2020-01-19", "2020-01-20", "2020-01-21", "2020-01-22", "2020-01-23", "2020-01-24",
-                "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31",
-                "2020-02-01", "2020-02-02"};
+            "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31",
+            "2020-02-01", "2020-02-02"};
         for (String s : logDateString) {
             DataHandle dataHandle = countData.new DataHandle();
             dataHandle.dataProcess(countData.readLog(s, "D:\\log\\"));
@@ -40,7 +40,7 @@ public class CountData {
                 fileNameWithout = fileName.substring(0, 10);
                 if (logDate.equals(fileNameWithout)) {
                     BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(
-                            new File(logPath + fileName)), "GBK"));
+                        new File(logPath + fileName)), "GBK"));
                     String str;
                     while ((str = bf.readLine()) != null) {
                         if (!str.startsWith("//")) {
@@ -299,11 +299,9 @@ public class CountData {
                 connection.setAutoCommit(false);
                 Statement statement = connection.createStatement();
                 for (int i = 0; i < influencedProvince.length; i++) {
-                    //if (influencedProvince[i] != 0) {
-                        statement.executeUpdate("INSERT INTO data VALUES(null, '" + logDate + "', '" + provinceString[i]
-                            + "', " + patient[i][0] + ", " + patient[i][1] + ", "+ patient[i][2] + ", "+ patient[i][3]
-                            + ", "+ patient[i][4] + ", "+ patient[i][5] + ")");
-                    //}
+                    statement.executeUpdate("INSERT INTO data VALUES(null, '" + logDate + "', '" + provinceString[i]
+                        + "', " + patient[i][0] + ", " + patient[i][1] + ", "+ patient[i][2] + ", "+ patient[i][3]
+                        + ", "+ patient[i][4] + ", "+ patient[i][5] + ")");
                 }
                 connection.commit();
             } catch (SQLException e) {
